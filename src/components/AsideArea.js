@@ -19,7 +19,7 @@ class AsideArea extends React.Component {
 		];
 
 		return (
-			<aside>
+			<aside className={this.props.className}>
 				<p>
 					Finish
 				</p>
@@ -33,5 +33,9 @@ class AsideArea extends React.Component {
 		);
 	}
 }
+
+AsideArea.defaultProps = {
+	className: '',
+};
 
 export default AsideArea;

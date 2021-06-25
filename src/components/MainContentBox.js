@@ -4,9 +4,9 @@ import React from 'react';
 class MainContentBox extends React.Component {
 	render() {
 		return (
-			<>
-				<div className="content-title">
-					<h2 className="title-pmr bgc-sdr text-bold">
+			<div className="main-content shadow p-4">
+				<div className="content-title-bar text-center">
+					<h2 className="content-title d-inline-block fs-4 title-bgc-secondary title-spacing">
 						{this.props.title}
 					</h2>
 
@@ -19,7 +19,7 @@ class MainContentBox extends React.Component {
 				</div>
 				
 				{this.props.children}
-			</>
+			</div>
 		);
 	}
 }

@@ -71,14 +71,17 @@ class MainArea extends React.Component {
 			{
 				title: '信用卡/金融卡',
 				value: 'credit-card',
+				img: require('../assets/img/credit-card.svg'),
 			},
 			{
 				title: '超商付款',
 				value: 'convenience-store',
+				img: require('../assets/img/shop.svg'),
 			},
 			{
 				title: 'Web ATM',
 				value: 'web-atm',
+				img: require('../assets/img/web-atm.svg'),
 			},
 		];
 		const showStoreFinishListItems = [
@@ -160,7 +163,7 @@ class MainArea extends React.Component {
 		const curStep = this.state.step;
 		const lastStepTitle = stepMap[Object.keys(stepMap).pop()].title;
 		const titleStep = stepMap[curStep].title === lastStepTitle ? '' : `STEP${curStep}. `;
-		const title = `${titleStep}${stepMap[curStep].title}`;
+		const title = `${titleStep} ${stepMap[curStep].title}`;
 		let subtitle = '';
 		let content = stepMap[curStep].content;
 		
@@ -180,11 +183,11 @@ class MainArea extends React.Component {
 		this.stepLength = Object.keys(stepMap).length;
 
 		return (
-			<main>
+			<main className={this.props.className}>
 				<StepBar
 					steps={this.stepLength}
 					curStep={curStep}
-					handleClick={this.handleStepClick}
+					className="justify-content-center my-4"
 				/>
 
 				<MainContentBox
@@ -197,5 +200,9 @@ class MainArea extends React.Component {
 		);
 	}
 }
+
+MainArea.defaultProps = {
+	className: '',
+};
 
 export default MainArea;

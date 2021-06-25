@@ -1,18 +1,13 @@
 @import-normalize;
 
-// 1. Include functions first (so you can manipulate colors, SVGs, calc, etc)
-@import "~bootstrap/scss/functions";
+$primary: #36B996;
+$secondary: #8DEFCB;
+$info: #D8D8D8;
+$light: #F7F7F7;
+$dark: #4B4B4B;
 
-// 2. Include any default variable overrides here
+@import "~bootstrap/scss/bootstrap";
 
-// 3. Include remainder of required Bootstrap stylesheets
-@import "~bootstrap/scss/variables";
-@import "~bootstrap/scss/mixins";
-
-// 4. Include any optional Bootstrap components as you like
-@import "~bootstrap/scss/root";
-@import "~bootstrap/scss/reboot";
-@import "~bootstrap/scss/type";
-@import "~bootstrap/scss/images";
-@import "~bootstrap/scss/containers";
-@import "~bootstrap/scss/grid";
+@import './components/stepBar';
+@import './components/text';
+@import './components/payMethod';

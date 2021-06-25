@@ -1,0 +1,24 @@
+.step-bar-item {
+    border-radius: 100%;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    display: block;
+
+    &:not(:last-child) {
+        margin-right: 60px;
+        position: relative;
+
+        &::after {
+            content: '';
+            width: 60px;
+            height: 3px;
+            display: block;
+            background-color: $info;
+            position: absolute;
+            left: 40px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+    }
+}
