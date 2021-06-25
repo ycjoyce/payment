@@ -79,7 +79,9 @@ class MainArea extends React.Component {
 				value: 'fill-in-info',
 				content: {
 					'credit-card': (
-						<PayByCard/>
+						<PayByCard
+							handleChangeStep={this.handleChangeStep}
+						/>
 					),
 					'convenience-store': '',
 					'web-atm': '',

@@ -2,6 +2,9 @@ import React from 'react';
 import CardNumCtrler from '../Controllers/CardNumCtrler';
 import InstallmentCtrler from '../Controllers/InstallmentCtrler';
 import ShowCardLabel from '../Controllers/ShowCardLabel';
+import ExpirationDateCtrler from '../Controllers/ExpirationDateCtrler';
+import SafeCodeCtrler from '../Controllers/SafeCodeCtrler';
+import EmailCtrler from '../Controllers/EmailCtrler';
 
 class PayByCard extends React.Component {
 	constructor(props) {
@@ -11,10 +14,18 @@ class PayByCard extends React.Component {
 			cardNum: Array(4).fill(''),
 			cardNumInputFocused: null,
 			cardNumUnvalid: null,
+			expirationYear: '選擇年',
+			expirationMonth: '選擇月',
+			safeCode: '',
+			safeCodeUnvalid: false,
+			email: '',
 		};
 		this.handleInstallmentChange = this.handleInstallmentChange.bind(this);
 		this.handleCardNumInput = this.handleCardNumInput.bind(this);
 		this.handleCardNumInputFocus = this.handleCardNumInputFocus.bind(this);
+		this.handleExpirationChange = this.handleExpirationChange.bind(this);
+		this.handleSafeCodeChange = this.handleSafeCodeChange.bind(this);
+		this.handleEmailChange = this.handleEmailChange.bind(this);
 	}
 
 	handleInstallmentChange(e) {
@@ -90,6 +101,34 @@ class PayByCard extends React.Component {
 		});
 	}
 
+	handleExpirationChange(e) {
+		const type = e.target.dataset.type;
+		const newType = `${type[0].toUpperCase()}${type.substr(1)}`;
+		const val = e.target.value;
+		this.setState({
+			[`expiration${newType}`] : val,
+		});
+	}
+
+	handleSafeCodeChange(e) {
+		if (Number.isNaN(+e.target.value)) {
+			this.setState({
+				safeCodeUnvalid: true,
+			});
+			return;
+		}
+		this.setState({
+			safeCodeUnvalid: false,
+			safeCode: e.target.value,
+		});
+	}
+
+	handleEmailChange(e) {
+		this.setState({
+			email: e.target.value,
+		});
+	}
+
 	render() {
 		const installment = [
 			{
@@ -137,6 +176,61 @@ class PayByCard extends React.Component {
 						labels={cardLabels}
 						checked={this.checkCardLabel(this.state.cardNum.join(''))}
 					/>
+				</section>
+
+				<section className="content-section">
+					<ExpirationDateCtrler
+						handleChange={this.handleExpirationChange}
+						yearVal={this.state.expirationYear}
+						monthVal={this.state.expirationMonth}
+					/>
+				</section>
+
+				<section className="content-section">
+					<SafeCodeCtrler
+						value={this.state.safeCode}
+						handleChange={this.handleSafeCodeChange}
+						unvalid={this.state.safeCodeUnvalid}
+					/>
+				</section>
+
+				<section className="content-section">
+					<EmailCtrler
+						value={this.state.email}
+						handleChange={this.handleEmailChange}
+					/>
+				</section>
+
+				<section className="content-section">
+					<label className="confirm-check">
+						<input
+							type="checkbox"
+							value={this.state.confirmCheck}
+							onChange={this.handleConfirmCheck}
+							className="form-ctrler confirm-check-ctrler"
+						/>
+						<p className="confirm-check-desc">
+							請再次確認「訂單資訊」與「付款資訊」，付款完成後將發送通知信至您的E-mail信箱
+						</p>
+					</label>
+				</section>
+
+				<section className="content-section">
+					<div>
+						<button
+							className="btn btn-solid-sdr corner-round-sm"
+							onClick={() => this.props.handleChangeStep('prev')}
+						>
+							回上一步
+						</button>
+
+						<button
+							className="btn btn-solid-pmr corner-round-sm"
+							onClick={() => this.props.handleChangeStep('next')}
+						>
+							確認付款
+						</button>
+					</div>
 				</section>
 			</>
 		);

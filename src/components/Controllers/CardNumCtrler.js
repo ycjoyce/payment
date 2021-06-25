@@ -1,4 +1,5 @@
 import React from 'react';
+import BasicCtrler from './BasicCtrler';
 
 class CardNumCtrler extends React.Component {
 	constructor(props) {
@@ -29,7 +30,7 @@ class CardNumCtrler extends React.Component {
 					type="text"
 					maxLength="4"
 					key={i}
-					className="ctrler-input-chain-item"
+					className="ctrler-chain-item form-ctrler"
 					data-col={i}
 					onInput={this.props.handleNumInput}
 					onFocus={this.props.handleFocus}
@@ -37,25 +38,22 @@ class CardNumCtrler extends React.Component {
 				/>
 			);
 		}
-		let chainClassName = 'ctrler-input-chain';
+		let chainClassName = 'ctrler-chain';
 		if (this.props.unvalid) {
 			chainClassName += ' error';
 		}
 
 		return (
 			<div className="card-num-ctrler">
-				<label className="ctrler-title">
-					信用卡號
-				</label>
-				<div className={chainClassName}>
-					{inputChain}
-				</div>
-				{
-					this.props.unvalid &&
-					<span className="error-msg text-sm">
-						輸入卡號錯誤
-					</span>
-				}
+				<BasicCtrler
+					title="信用卡號"
+					errorMsg="輸入卡號錯誤"
+					unvalid={this.props.unvalid}
+				>
+					<div className={chainClassName}>
+						{inputChain}
+					</div>
+				</BasicCtrler>
 			</div>
 		);
 	}
