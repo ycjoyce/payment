@@ -1,10 +1,11 @@
 import React from 'react';
-import CardNumCtrler from '../Controllers/CardNumCtrler';
-import InstallmentCtrler from '../Controllers/InstallmentCtrler';
-import ShowCardLabel from '../Controllers/ShowCardLabel';
-import ExpirationDateCtrler from '../Controllers/ExpirationDateCtrler';
-import SafeCodeCtrler from '../Controllers/SafeCodeCtrler';
-import EmailCtrler from '../Controllers/EmailCtrler';
+import CardNumCtrler from '../controllers/CardNumCtrler';
+import InstallmentCtrler from '../controllers/InstallmentCtrler';
+import ShowCardLabel from '../controllers/ShowCardLabel';
+import ExpirationDateCtrler from '../controllers/ExpirationDateCtrler';
+import SafeCodeCtrler from '../controllers/SafeCodeCtrler';
+import ConfirmCheckCtrler from '../controllers/ConfirmCheckCtrler';
+import BtnsToChangeStep from '../BtnsToChangeStep';
 
 class PayByCard extends React.Component {
 	constructor(props) {
@@ -18,14 +19,12 @@ class PayByCard extends React.Component {
 			expirationMonth: '選擇月',
 			safeCode: '',
 			safeCodeUnvalid: false,
-			email: '',
 		};
 		this.handleInstallmentChange = this.handleInstallmentChange.bind(this);
 		this.handleCardNumInput = this.handleCardNumInput.bind(this);
 		this.handleCardNumInputFocus = this.handleCardNumInputFocus.bind(this);
 		this.handleExpirationChange = this.handleExpirationChange.bind(this);
 		this.handleSafeCodeChange = this.handleSafeCodeChange.bind(this);
-		this.handleEmailChange = this.handleEmailChange.bind(this);
 	}
 
 	handleInstallmentChange(e) {
@@ -123,12 +122,6 @@ class PayByCard extends React.Component {
 		});
 	}
 
-	handleEmailChange(e) {
-		this.setState({
-			email: e.target.value,
-		});
-	}
-
 	render() {
 		const installment = [
 			{
@@ -195,42 +188,18 @@ class PayByCard extends React.Component {
 				</section>
 
 				<section className="content-section">
-					<EmailCtrler
-						value={this.state.email}
-						handleChange={this.handleEmailChange}
+					<ConfirmCheckCtrler
+						email={this.props.email}
+						handleEmailChange={this.props.handleEmailChange}
+						confirmCheck={this.props.confirmCheck}
+						handleConfirmCheck={this.props.handleConfirmCheck}
 					/>
 				</section>
 
 				<section className="content-section">
-					<label className="confirm-check">
-						<input
-							type="checkbox"
-							value={this.state.confirmCheck}
-							onChange={this.handleConfirmCheck}
-							className="form-ctrler confirm-check-ctrler"
-						/>
-						<p className="confirm-check-desc">
-							請再次確認「訂單資訊」與「付款資訊」，付款完成後將發送通知信至您的E-mail信箱
-						</p>
-					</label>
-				</section>
-
-				<section className="content-section">
-					<div>
-						<button
-							className="btn btn-solid-sdr corner-round-sm"
-							onClick={() => this.props.handleChangeStep('prev')}
-						>
-							回上一步
-						</button>
-
-						<button
-							className="btn btn-solid-pmr corner-round-sm"
-							onClick={() => this.props.handleChangeStep('next')}
-						>
-							確認付款
-						</button>
-					</div>
+					<BtnsToChangeStep
+						handleChangeStep={this.props.handleChangeStep}
+					/>
 				</section>
 			</>
 		);

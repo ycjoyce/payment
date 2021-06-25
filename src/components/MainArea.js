@@ -3,6 +3,10 @@ import StepBar from './StepBar';
 import MainContentBox from './MainContentBox';
 import PayMethod from './stepContent/PayMethod';
 import PayByCard from './stepContent/PayByCard';
+import PayByWebATM from './stepContent/PayByWebATM';
+import PayByStore from './stepContent/PayByStore';
+import ShowFinish from './stepContent/ShowFinish';
+import ShowStoreFinish from './stepContent/ShowStoreFinish';
 
 class MainArea extends React.Component {
 	constructor(props) {
@@ -10,10 +14,14 @@ class MainArea extends React.Component {
 		this.state = {
 			step: 1,
 			payMethod: '',
+			email: '',
+			confirmCheck: false,
 		};
 		this.handleStepClick = this.handleStepClick.bind(this);
 		this.handlePayMethodClick = this.handlePayMethodClick.bind(this);
 		this.handleChangeStep = this.handleChangeStep.bind(this);
+		this.handleEmailChange = this.handleEmailChange.bind(this);
+		this.handleConfirmCheck = this.handleConfirmCheck.bind(this);
 	}
 
 	handleStepClick(e) {
@@ -46,6 +54,18 @@ class MainArea extends React.Component {
 		}
 	}
 
+	handleEmailChange(e) {
+		this.setState({
+			email: e.target.value,
+		});
+	}
+
+	handleConfirmCheck(e) {
+		this.setState({
+			confirmCheck: e.target.checked,
+		});
+	}
+
 	render() {
 		const payMethods = [
 			{
@@ -61,6 +81,21 @@ class MainArea extends React.Component {
 				value: 'web-atm',
 			},
 		];
+		const showStoreFinishListItems = [
+			{
+				title: '付款超商',
+				content: '全家便利商店',
+			},
+			{
+				title: '付款代碼',
+				content: 'HSD5DSK2349',
+			},
+			{
+				title: '付款期限',
+				content: '2021-07-25 23:59:59',
+			},
+		];
+
 		const stepMap = {
 			1: {
 				title: '選擇付款方式',
@@ -81,16 +116,45 @@ class MainArea extends React.Component {
 					'credit-card': (
 						<PayByCard
 							handleChangeStep={this.handleChangeStep}
+							email={this.state.email}
+							handleEmailChange={this.handleEmailChange}
+							confirmCheck={this.state.confirmCheck}
+							handleConfirmCheck={this.handleConfirmCheck}
 						/>
 					),
-					'convenience-store': '',
-					'web-atm': '',
+					'convenience-store': (
+						<PayByStore
+							email={this.state.email}
+							handleEmailChange={this.handleEmailChange}
+							confirmCheck={this.state.confirmCheck}
+							handleConfirmCheck={this.handleConfirmCheck}
+							handleChangeStep={this.handleChangeStep}
+						/>
+					),
+					'web-atm': (
+						<PayByWebATM
+							email={this.state.email}
+							handleEmailChange={this.handleEmailChange}
+							confirmCheck={this.state.confirmCheck}
+							handleConfirmCheck={this.handleConfirmCheck}
+							handleChangeStep={this.handleChangeStep}
+						/>
+					),
 				},
 			},
 			3: {
 				title: '您的訂單已完成付款',
 				value: 'finish',
-				content: '',
+				content: {
+					'default-show': (
+						<ShowFinish/>
+					),
+					store: (
+						<ShowStoreFinish
+							listItems={showStoreFinishListItems}
+						/>
+					),
+				},
 			},
 		};
 		const curStep = this.state.step;
@@ -103,6 +167,14 @@ class MainArea extends React.Component {
 		if (stepMap[curStep].value === 'fill-in-info') {
 			subtitle = payMethods.find((method) => method.value === this.state.payMethod).title;
 			content = stepMap[curStep].content[this.state.payMethod];
+		}
+
+		if (stepMap[curStep].value === 'finish') {
+			if (this.state.payMethod === 'convenience-store') {
+				content = stepMap[curStep].content.store;
+			} else {
+				content = stepMap[curStep].content['default-show'];
+			}
 		}
 
 		this.stepLength = Object.keys(stepMap).length;
