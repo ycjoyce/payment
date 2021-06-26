@@ -4,15 +4,15 @@ class BasicCtrler extends React.Component {
 	render() {
 		return (
 			<>
-				<label className="ctrler-title">
+				<label className="form-label d-block">
 					{this.props.title}
 				</label>
 				{this.props.children}
 				{
 					this.props.unvalid &&
-					<span className="error-msg text-sm">
+					<small className="error-msg text-danger d-block">
 						{this.props.errorMsg}
-					</span>
+					</small>
 				}
 			</>
 		);

@@ -33,21 +33,26 @@ class ExpirationDateCtrler extends React.Component {
 			{ start: 1, end: 12 },
 		);
 		
+		let containerClassName = 'expiration-date-ctrler';
+		if (this.props.className) {
+			containerClassName += ` ${this.props.className}`;
+		}
+		
 		return (
-			<div className="expiration-date-ctrler">
+			<div className={containerClassName}>
 				<BasicCtrler title="有效月年">
-					<div className="ctrler-chain">
+					<div className="d-inline-flex align-items-center">
 						<select
-							className="ctrler-chain-item"
+							className="form-select"
 							onChange={this.props.handleChange}
 							value={this.props.yearVal}
 							data-type="year"
 						>
 							{yearOptions}
 						</select>
-
+						<span className="mx-2">/</span>
 						<select
-							className="ctrler-chain-item"
+							className="form-select"
 							onChange={this.props.handleChange}
 							value={this.props.monthVal}
 							data-type="month"
@@ -60,5 +65,9 @@ class ExpirationDateCtrler extends React.Component {
 		);
 	}
 }
+
+ExpirationDateCtrler.defaultProps = {
+	className: '',
+};
 
 export default ExpirationDateCtrler;

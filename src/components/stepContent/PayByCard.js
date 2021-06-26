@@ -1,7 +1,6 @@
 import React from 'react';
 import CardNumCtrler from '../controllers/CardNumCtrler';
 import InstallmentCtrler from '../controllers/InstallmentCtrler';
-import ShowCardLabel from '../controllers/ShowCardLabel';
 import ExpirationDateCtrler from '../controllers/ExpirationDateCtrler';
 import SafeCodeCtrler from '../controllers/SafeCodeCtrler';
 import ConfirmCheckCtrler from '../controllers/ConfirmCheckCtrler';
@@ -123,16 +122,6 @@ class PayByCard extends React.Component {
 	}
 
 	render() {
-		const installment = [
-			{
-				title: '一次付款',
-				value: 'pay-once',
-			},
-			{
-				title: '分期付款',
-				value: 'installment-plan',
-			}
-		];
 		const cardLabels = [
 			{
 				title: 'visa',
@@ -147,60 +136,62 @@ class PayByCard extends React.Component {
 				img: require('../../assets/img/jcb.svg'),
 			}
 		];
+		const installment = [
+			{
+				title: '一次付款',
+				value: 'pay-once',
+			},
+			{
+				title: '分期付款',
+				value: 'installment-plan',
+			}
+		];
+		
 
 		return (
 			<>
-				<section className="content-section">
-					<InstallmentCtrler
-						installments={installment}
-						checked={this.state.installment}
-						handleChange={this.handleInstallmentChange}
-					/>
-				</section>
+				<InstallmentCtrler
+					installments={installment}
+					checked={this.state.installment}
+					handleChange={this.handleInstallmentChange}
+					className="mb-4"
+				/>
 
-				<section className="content-section">
-					<CardNumCtrler
-						handleNumInput={this.handleCardNumInput}
-						handleFocus={this.handleCardNumInputFocus}
-						inputFocused={this.state.cardNumInputFocused}
-						unvalid={this.state.cardNumUnvalid}
-					/>
-					<ShowCardLabel
-						labels={cardLabels}
-						checked={this.checkCardLabel(this.state.cardNum.join(''))}
-					/>
-				</section>
+				<CardNumCtrler
+					inputFocused={this.state.cardNumInputFocused}
+					unvalid={this.state.cardNumUnvalid}
+					cardLabels={cardLabels}
+					cardLabelChecked={this.checkCardLabel(this.state.cardNum.join(''))}
+					handleNumInput={this.handleCardNumInput}
+					handleFocus={this.handleCardNumInputFocus}
+					className="mb-4"
+				/>
 
-				<section className="content-section">
-					<ExpirationDateCtrler
-						handleChange={this.handleExpirationChange}
-						yearVal={this.state.expirationYear}
-						monthVal={this.state.expirationMonth}
-					/>
-				</section>
+				<ExpirationDateCtrler
+					yearVal={this.state.expirationYear}
+					monthVal={this.state.expirationMonth}
+					handleChange={this.handleExpirationChange}
+					className="mb-4"
+				/>
 
-				<section className="content-section">
-					<SafeCodeCtrler
-						value={this.state.safeCode}
-						handleChange={this.handleSafeCodeChange}
-						unvalid={this.state.safeCodeUnvalid}
-					/>
-				</section>
+				<SafeCodeCtrler
+					value={this.state.safeCode}
+					unvalid={this.state.safeCodeUnvalid}
+					handleChange={this.handleSafeCodeChange}
+					className="mb-4"
+				/>
 
-				<section className="content-section">
-					<ConfirmCheckCtrler
-						email={this.props.email}
-						handleEmailChange={this.props.handleEmailChange}
-						confirmCheck={this.props.confirmCheck}
-						handleConfirmCheck={this.props.handleConfirmCheck}
-					/>
-				</section>
+				<ConfirmCheckCtrler
+					email={this.props.email}
+					confirmCheck={this.props.confirmCheck}
+					handleEmailChange={this.props.handleEmailChange}
+					handleConfirmCheck={this.props.handleConfirmCheck}
+					className="mb-4"
+				/>
 
-				<section className="content-section">
-					<BtnsToChangeStep
-						handleChangeStep={this.props.handleChangeStep}
-					/>
-				</section>
+				<BtnsToChangeStep
+					handleChangeStep={this.props.handleChangeStep}
+				/>
 			</>
 		);
 	}

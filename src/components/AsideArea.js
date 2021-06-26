@@ -20,14 +20,19 @@ class AsideArea extends React.Component {
 
 		return (
 			<aside className={this.props.className}>
-				<p>
-					Finish
-				</p>
+				{
+					this.props.finish &&
+					<p>
+						Finish
+					</p>
+				}
 				<OrderInfo
 					listItems={orderInfoContent}
 				/>
-				<button>
-					返回商店
+				<button className="btn btn-dark mt-4">
+					<small>
+						返回商店
+					</small>
 				</button>
 			</aside>
 		);

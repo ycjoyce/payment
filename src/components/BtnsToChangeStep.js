@@ -3,19 +3,19 @@ import React from 'react';
 class BtnsToChangeStep extends React.Component {
   render() {
 		return (
-			<div>
+			<div className="d-flex justify-content-between">
 				<button
-					className="btn btn-solid-sdr corner-round-sm"
+					className="btn btn-secondary"
 					onClick={() => this.props.handleChangeStep('prev')}
 				>
-					回上一步
+					<small>回上一步</small>
 				</button>
 
 				<button
-					className="btn btn-solid-pmr corner-round-sm"
+					className="btn btn-primary text-white"
 					onClick={() => this.props.handleChangeStep('next')}
 				>
-					確認付款
+					<small>確認付款</small>
 				</button>
 			</div>
 		);

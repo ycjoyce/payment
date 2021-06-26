@@ -4,7 +4,7 @@ class StepBar extends React.Component {
 	render() {
 		const steps = [];
 		for (let i = 0; i < this.props.steps; i++) {
-			let className = 'step-bar-item badge p-0';
+			let className = 'step-bar-item badge rounded-circle p-0';
 			if (i + 1 <= this.props.curStep) {
 				className += ' bg-secondary';
 			} else {

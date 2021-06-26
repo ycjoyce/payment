@@ -2,7 +2,7 @@ import React from 'react';
 
 class List extends React.Component {
     render() {
-        let listClassName = 'list';
+        let listClassName = 'list ps-0 mb-0';
         if (this.props.className) {
             listClassName += ` ${this.props.className}`;
         }
@@ -14,7 +14,7 @@ class List extends React.Component {
 			>
                 {
                     item.title && 
-                    <p className="list-item-title">
+                    <p className="list-item-title fw-light mb-0">
                         {item.title}
                     </p>
                 }

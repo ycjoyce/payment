@@ -1,0 +1,5 @@
+.card-label {
+    &.light {
+        filter: brightness(0) saturate(100%) invert(53%) sepia(100%) saturate(288%) hue-rotate(113deg) brightness(96%) contrast(86%);
+    }
+}

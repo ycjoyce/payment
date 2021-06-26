@@ -2,9 +2,14 @@ import React from 'react';
 
 class InstallmentCtrler extends React.Component {
 	render() {
-		const installmentInputs = this.props.installments.map((item) => (
+		let containerClassName = 'installment-ctrler';
+		if (this.props.className) {
+			containerClassName += ` ${this.props.className}`;
+		}
+
+		const installmentInputs = this.props.installments.map((item, index, arr) => (
 			<label
-				className="installment-ctrler"
+				className={index === arr.length - 1 ? '' : 'me-3'}
 				key={item.value}
 			>
 				<input
@@ -13,17 +18,22 @@ class InstallmentCtrler extends React.Component {
 					value={item.value}
 					checked={item.value === this.props.checked}
 					onChange={this.props.handleChange}
+					className="me-2 form-check-input"
 				/>
 				{item.title}
 			</label>
 		));
 
 		return (
-			<>
+			<div className={containerClassName}>
 				{installmentInputs}
-			</>
+			</div>
 		);
 	}
 }
+
+InstallmentCtrler.defaultProps = {
+	className: '',
+};
 
 export default InstallmentCtrler;

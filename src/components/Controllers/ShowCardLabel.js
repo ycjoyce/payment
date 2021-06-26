@@ -2,16 +2,18 @@ import React from 'react';
 
 class ShowCardLabel extends React.Component {
 	render() {
-		const labels = this.props.labels.map((label) => {
-			let className = 'card-label';
+		const labels = this.props.labels.map((label, index, arr) => {
+			let className = 'card-label form-control-sketch';
 			if (this.props.checked === label.title) {
 				className += ' light';
 			}
+			if (index !== arr.length - 1) {
+				className += ' me-1';
+			}
 			
 			return (
-				<input
+				<img
 					className={className}
-					type="image"
 					src={label.img.default}
 					alt={label.title}
 					data-label={label.title}
@@ -20,12 +22,21 @@ class ShowCardLabel extends React.Component {
 			);
 		});
 
+		let containerClassName = 'card-label-box d-flex';
+		if (this.props.className) {
+			containerClassName += ` ${this.props.className}`;
+		}
+
 		return (
-			<div className="card-label-box">
+			<div className={containerClassName}>
 				{labels}
 			</div>
 		);
 	}
 }
+
+ShowCardLabel.defaultProps = {
+	className: '',
+};
 
 export default ShowCardLabel;
