@@ -87,8 +87,4 @@ class CardNumCtrler extends React.Component {
 	}
 }
 
-CardNumCtrler.defaultProps = {
-	className: '',
-};
-
 export default CardNumCtrler;

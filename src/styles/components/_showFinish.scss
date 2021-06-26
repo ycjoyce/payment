@@ -1,0 +1,21 @@
+.show-finish-img-box {
+    position: relative;
+
+    &::after {
+        content: '';
+        display: inline-block;
+        width: 100px;
+        height: 100px;
+        border-radius: 100%;
+        background-color: $secondary;
+        position: absolute;
+        left: 50%;
+        transform: translate(-50%);
+        z-index: -1;
+    }
+}
+
+.show-finish-img {
+    display: inline-block;
+    width: 100px;
+}

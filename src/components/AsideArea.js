@@ -39,8 +39,4 @@ class AsideArea extends React.Component {
 	}
 }
 
-AsideArea.defaultProps = {
-	className: '',
-};
-
 export default AsideArea;

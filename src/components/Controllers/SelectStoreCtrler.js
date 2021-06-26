@@ -3,6 +3,11 @@ import BasicCtrler from './BasicCtrler';
 
 class SelectStoreCtrler extends React.Component {
     render() {
+        let containerClassName = 'confirm-check-ctrler';
+		if (this.props.className) {
+			containerClassName += ` ${this.props.className}`;
+        }
+        
         const placeholder = '選擇商店';
         let stores = [
             placeholder,
@@ -22,14 +27,19 @@ class SelectStoreCtrler extends React.Component {
         ));
 
         return (
-            <BasicCtrler title="付款超商">
-                <select
-                    value={this.props.value}
-                    onChange={this.props.handleChange}
-                >
-                    {stores}            
-                </select>
-            </BasicCtrler>
+            <div className={containerClassName}>
+                <BasicCtrler title="付款超商">
+                    <div className="col-md-6">
+                        <select
+                            value={this.props.value}
+                            className="form-select"
+                            onChange={this.props.handleChange}
+                        >
+                            {stores}            
+                        </select>
+                    </div>
+                </BasicCtrler>
+            </div>
         );
     }
 }

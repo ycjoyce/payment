@@ -35,8 +35,4 @@ class ShowCardLabel extends React.Component {
 	}
 }
 
-ShowCardLabel.defaultProps = {
-	className: '',
-};
-
 export default ShowCardLabel;

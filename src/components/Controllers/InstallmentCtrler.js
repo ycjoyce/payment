@@ -32,8 +32,4 @@ class InstallmentCtrler extends React.Component {
 	}
 }
 
-InstallmentCtrler.defaultProps = {
-	className: '',
-};
-
 export default InstallmentCtrler;

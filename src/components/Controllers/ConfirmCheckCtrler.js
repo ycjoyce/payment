@@ -31,8 +31,4 @@ class ConfirmCheckCtrler extends React.Component {
 	}
 }
 
-ConfirmCheckCtrler.defaultProps = {
-	className: '',
-};
-
 export default ConfirmCheckCtrler;

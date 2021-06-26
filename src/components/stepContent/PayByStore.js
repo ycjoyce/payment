@@ -24,13 +24,17 @@ class PayByStore extends React.Component {
 				<SelectStoreCtrler
 					value={this.state.store}
 					handleChange={this.handleStoreSelect}
+					className="mb-4"
 				/>
+
 				<ConfirmCheckCtrler
 					email={this.props.email}
-					handleEmailChange={this.props.handleEmailChange}
 					confirmCheck={this.props.confirmCheck}
+					handleEmailChange={this.props.handleEmailChange}
 					handleConfirmCheck={this.props.handleConfirmCheck}
+					className="mb-4"
 				/>
+
 				<BtnsToChangeStep
 					handleChangeStep={this.props.handleChangeStep}
 				/>

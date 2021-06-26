@@ -6,7 +6,7 @@ import MainArea from './components/MainArea';
 class App extends React.Component {
 	render() {
 		return (
-			<div className="row">
+			<div className="row g-0">
 				<AsideArea
 					className="col-sm-3"
 				/>

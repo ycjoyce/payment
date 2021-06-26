@@ -6,23 +6,36 @@ class List extends React.Component {
         if (this.props.className) {
             listClassName += ` ${this.props.className}`;
         }
+        
+        let listItemContentClassName = 'list-item-content mb-0';
+        if (this.props.listItemContentClassName) {
+            listItemContentClassName += ` ${this.props.listItemContentClassName}`;
+        }
 
-        const listItems = this.props.listItems.map((item) => (
-			<li
-				className="list-item"
-				key={item.title}
-			>
-                {
-                    item.title && 
-                    <p className="list-item-title fw-light mb-0">
-                        {item.title}
+        const listItems = this.props.listItems.map((item, index, arr) => {
+            let listItemClassName = 'list-item';
+            if (this.props.listItemClassName && index !== arr.length - 1) {
+                listItemClassName += ` ${this.props.listItemClassName}`;
+            }
+
+            return (
+                <li
+                    className={listItemClassName}
+                    key={item.title}
+                >
+                    {
+                        item.title && 
+                        <p className="list-item-title fw-light mb-0">
+                            {item.title}
+                        </p>
+                    }
+                    <p className={listItemContentClassName}>
+                        {item.content}
                     </p>
-                }
-				<p className="list-item-content">
-					{item.content}
-				</p>
-			</li>
-		));
+                </li>
+            );
+			
+        });
 
         return (
             <ul className={listClassName}>

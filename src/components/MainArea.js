@@ -146,7 +146,10 @@ class MainArea extends React.Component {
 				},
 			},
 			3: {
-				title: '您的訂單已完成付款',
+				title: {
+					'default-show': '您的訂單已完成付款！',
+					store: '您的訂單已成立！',
+				},
 				value: 'finish',
 				content: {
 					'default-show': (
@@ -163,7 +166,7 @@ class MainArea extends React.Component {
 		const curStep = this.state.step;
 		const lastStepTitle = stepMap[Object.keys(stepMap).pop()].title;
 		const titleStep = stepMap[curStep].title === lastStepTitle ? '' : `STEP${curStep}. `;
-		const title = `${titleStep} ${stepMap[curStep].title}`;
+		let title = '';
 		let subtitle = '';
 		let content = stepMap[curStep].content;
 		
@@ -174,10 +177,14 @@ class MainArea extends React.Component {
 
 		if (stepMap[curStep].value === 'finish') {
 			if (this.state.payMethod === 'convenience-store') {
+				title = stepMap[curStep].title.store;
 				content = stepMap[curStep].content.store;
 			} else {
+				title = stepMap[curStep].title['default-show'];
 				content = stepMap[curStep].content['default-show'];
 			}
+		} else {
+			title = `${titleStep} ${stepMap[curStep].title}`
 		}
 
 		this.stepLength = Object.keys(stepMap).length;
@@ -200,9 +207,5 @@ class MainArea extends React.Component {
 		);
 	}
 }
-
-MainArea.defaultProps = {
-	className: '',
-};
 
 export default MainArea;

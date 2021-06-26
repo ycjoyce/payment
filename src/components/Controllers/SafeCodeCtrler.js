@@ -20,7 +20,7 @@ class SafeCodeCtrler extends React.Component {
 					unvalid={this.props.unvalid}
 					errorMsg="請輸入正確背面末三碼"
 				>
-					<div className="d-inline-flex align-items-end">
+					<div className="col-lg-3 d-inline-flex align-items-end">
 						<input
 							value={this.props.value}
 							onChange={this.props.handleChange}
@@ -39,9 +39,5 @@ class SafeCodeCtrler extends React.Component {
 		);
 	}
 }
-
-SafeCodeCtrler.defaultProps = {
-	className: '',
-};
 
 export default SafeCodeCtrler;

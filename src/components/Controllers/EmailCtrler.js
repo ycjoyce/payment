@@ -11,7 +11,7 @@ class EmailCtrler extends React.Component {
 		return (
 			<div className={containerClassName}>
 				<BasicCtrler title="填寫付款人信箱">
-					<div className="d-inline-block">
+					<div className="col-md-6">
 						<input
 							type="email"
 							value={this.props.value}
@@ -24,9 +24,5 @@ class EmailCtrler extends React.Component {
 		);
 	}
 }
-
-EmailCtrler.defaultProps = {
-	className: '',
-};
 
 export default EmailCtrler;

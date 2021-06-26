@@ -24,13 +24,17 @@ class PayByWebATM extends React.Component {
 				<SelectBankCtrler
 					value={this.state.bank}
 					handleChange={this.handleBankSelect}
+					className="mb-4"
 				/>
+
 				<ConfirmCheckCtrler
 					email={this.props.email}
 					handleEmailChange={this.props.handleEmailChange}
 					confirmCheck={this.props.confirmCheck}
 					handleConfirmCheck={this.props.handleConfirmCheck}
+					className="mb-4"
 				/>
+
 				<BtnsToChangeStep
 					handleChangeStep={this.props.handleChangeStep}
 				/>
