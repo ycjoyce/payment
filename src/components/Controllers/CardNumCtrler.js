@@ -68,7 +68,7 @@ class CardNumCtrler extends React.Component {
 			<div className={containerClassName}>
 				<BasicCtrler
 					title="信用卡號"
-					errorMsg="輸入卡號錯誤"
+					errorMsg="請輸入正確信用卡號"
 					unvalid={this.props.unvalid}
 				>
 					<div className="d-flex flex-wrap flex-lg-nowrap align-items-end">

@@ -1,0 +1,9 @@
+.order-info-list {
+    .list-item {
+        margin-bottom: map-get($spacers, 2);
+    }
+
+    .list-item-title {
+        font-weight: $font-weight-light;
+    }
+}

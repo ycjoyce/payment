@@ -7,6 +7,8 @@ import PayByWebATM from './stepContent/PayByWebATM';
 import PayByStore from './stepContent/PayByStore';
 import ShowFinish from './stepContent/ShowFinish';
 import ShowStoreFinish from './stepContent/ShowStoreFinish';
+import ConfirmCheckCtrler from './controllers/ConfirmCheckCtrler';
+import BtnsToChangeStep from './BtnsToChangeStep';
 
 class MainArea extends React.Component {
 	constructor(props) {
@@ -16,12 +18,20 @@ class MainArea extends React.Component {
 			payMethod: '',
 			email: '',
 			confirmCheck: false,
+			unvalid: {
+				email: false,
+				confirmCheck: false,
+			},
+			submitMethod: null,
 		};
 		this.handleStepClick = this.handleStepClick.bind(this);
 		this.handlePayMethodClick = this.handlePayMethodClick.bind(this);
 		this.handleChangeStep = this.handleChangeStep.bind(this);
 		this.handleEmailChange = this.handleEmailChange.bind(this);
 		this.handleConfirmCheck = this.handleConfirmCheck.bind(this);
+		this.handleSubmitMethod = this.handleSubmitMethod.bind(this);
+		this.handleSetUnvalid = this.handleSetUnvalid.bind(this);
+		this.validateEmail = this.validateEmail.bind(this);
 	}
 
 	handleStepClick(e) {
@@ -55,15 +65,47 @@ class MainArea extends React.Component {
 	}
 
 	handleEmailChange(e) {
-		this.setState({
+		this.setState((state) => ({
 			email: e.target.value,
-		});
+			unvalid: {
+				...state.unvalid,
+				email: !this.validateEmail(e.target.value),
+			},
+		}));
+	}
+
+	validateEmail(email) {
+		const rule = /^\w+((-\w+)|(\.\w+))*@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
+		return rule.test(email);
 	}
 
 	handleConfirmCheck(e) {
 		this.setState({
 			confirmCheck: e.target.checked,
 		});
+		if (e.target.checked) {
+			this.setState((state) => ({
+				unvalid: {
+					...state.unvalid,
+					confirmCheck: false,
+				},
+			}));
+		}
+	}
+
+	handleSubmitMethod(val) {
+		this.setState({
+			submitMethod: val,
+		});
+	}
+
+	handleSetUnvalid(col, val) {
+		this.setState((state) => ({
+			unvalid: {
+				...state.unvalid,
+				[col]: val,
+			},
+		}));
 	}
 
 	render() {
@@ -99,6 +141,25 @@ class MainArea extends React.Component {
 			},
 		];
 
+		const confirmArea = (
+			<>
+				<ConfirmCheckCtrler
+					email={this.state.email}
+					emailUnvalid={this.state.unvalid.email}
+					confirmCheck={this.state.confirmCheck}
+					confirmCheckUnvalid={this.state.unvalid.confirmCheck}
+					handleEmailChange={this.handleEmailChange}
+					handleConfirmCheck={this.handleConfirmCheck}
+					className="mb-4"
+				/>
+
+				<BtnsToChangeStep
+					handleChangeStep={this.handleChangeStep}
+					handleSubmit={this.state.submitMethod}
+				/>
+			</>
+		);
+
 		const stepMap = {
 			1: {
 				title: '選擇付款方式',
@@ -118,30 +179,25 @@ class MainArea extends React.Component {
 				content: {
 					'credit-card': (
 						<PayByCard
-							handleChangeStep={this.handleChangeStep}
 							email={this.state.email}
-							handleEmailChange={this.handleEmailChange}
 							confirmCheck={this.state.confirmCheck}
-							handleConfirmCheck={this.handleConfirmCheck}
-						/>
+							validateEmail={this.validateEmail}
+							handleSubmitMethod={this.handleSubmitMethod}
+							handleChangeStep={this.handleChangeStep}
+							handleSetUnvalid={this.handleSetUnvalid}
+						>
+							{confirmArea}
+						</PayByCard>
 					),
 					'convenience-store': (
-						<PayByStore
-							email={this.state.email}
-							handleEmailChange={this.handleEmailChange}
-							confirmCheck={this.state.confirmCheck}
-							handleConfirmCheck={this.handleConfirmCheck}
-							handleChangeStep={this.handleChangeStep}
-						/>
+						<PayByStore>
+							{confirmArea}
+						</PayByStore>
 					),
 					'web-atm': (
-						<PayByWebATM
-							email={this.state.email}
-							handleEmailChange={this.handleEmailChange}
-							confirmCheck={this.state.confirmCheck}
-							handleConfirmCheck={this.handleConfirmCheck}
-							handleChangeStep={this.handleChangeStep}
-						/>
+						<PayByWebATM>
+							{confirmArea}
+						</PayByWebATM>
 					),
 				},
 			},

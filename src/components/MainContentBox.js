@@ -1,6 +1,5 @@
 import React from 'react';
 
-
 class MainContentBox extends React.Component {
 	render() {
 		return (

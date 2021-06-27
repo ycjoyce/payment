@@ -1,4 +1,5 @@
 import React from 'react';
+import BasicCtrler from './BasicCtrler';
 
 class InstallmentCtrler extends React.Component {
 	render() {
@@ -26,7 +27,12 @@ class InstallmentCtrler extends React.Component {
 
 		return (
 			<div className={containerClassName}>
-				{installmentInputs}
+				<BasicCtrler
+					unvalid={this.props.unvalid}
+					errorMsg="請選擇一次或分期付款"
+				>
+					{installmentInputs}
+				</BasicCtrler>
 			</div>
 		);
 	}

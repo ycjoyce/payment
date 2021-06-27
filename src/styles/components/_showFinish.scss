@@ -19,3 +19,13 @@
     display: inline-block;
     width: 100px;
 }
+
+.show-store-finish-list {
+    .list-item {
+        margin-bottom: map-get($spacers, 4);
+    }
+
+    .list-item-content {
+        font-size: map-get($font-sizes, 3);
+    }
+}

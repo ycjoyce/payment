@@ -10,9 +10,8 @@ class OrderInfo extends React.Component {
 				</h3>
 
 				<List
-					className="order-info-list"
 					listItems={this.props.listItems}
-					listItemClassName="mb-2"
+					className="order-info-list"
 				/>
 			</div>
 		);

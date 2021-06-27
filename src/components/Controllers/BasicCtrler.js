@@ -4,13 +4,18 @@ class BasicCtrler extends React.Component {
 	render() {
 		return (
 			<>
-				<label className="form-label d-block">
-					{this.props.title}
-				</label>
+				{
+					this.props.title &&
+					<label className="form-label d-block">
+						{this.props.title}
+					</label>
+				}
+	
 				{this.props.children}
+
 				{
 					this.props.unvalid &&
-					<small className="error-msg text-danger d-block">
+					<small className="error-msg text-danger d-block mt-1">
 						{this.props.errorMsg}
 					</small>
 				}

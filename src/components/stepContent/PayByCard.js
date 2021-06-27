@@ -3,31 +3,42 @@ import CardNumCtrler from '../controllers/CardNumCtrler';
 import InstallmentCtrler from '../controllers/InstallmentCtrler';
 import ExpirationDateCtrler from '../controllers/ExpirationDateCtrler';
 import SafeCodeCtrler from '../controllers/SafeCodeCtrler';
-import ConfirmCheckCtrler from '../controllers/ConfirmCheckCtrler';
-import BtnsToChangeStep from '../BtnsToChangeStep';
 
 class PayByCard extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			installment: '一次付款',
+			installment: '',
 			cardNum: Array(4).fill(''),
 			cardNumInputFocused: null,
-			cardNumUnvalid: null,
-			expirationYear: '選擇年',
-			expirationMonth: '選擇月',
+			expiration: {
+				year: '選擇年',
+				month: '選擇月',
+			},
 			safeCode: '',
-			safeCodeUnvalid: false,
+			unvalid: {
+				installment: false,
+				cardNum: false,
+				expiration: false,
+				safeCode: false,
+			},
 		};
 		this.handleInstallmentChange = this.handleInstallmentChange.bind(this);
 		this.handleCardNumInput = this.handleCardNumInput.bind(this);
 		this.handleCardNumInputFocus = this.handleCardNumInputFocus.bind(this);
 		this.handleExpirationChange = this.handleExpirationChange.bind(this);
 		this.handleSafeCodeChange = this.handleSafeCodeChange.bind(this);
+		this.handleSubmit = this.handleSubmit.bind(this);
 	}
 
 	handleInstallmentChange(e) {
-		this.setState({ installment: e.target.value });
+		this.setState((state) => ({
+			installment: e.target.value,
+			unvalid: {
+				...state.unvalid,
+				installment: false,
+			},
+		}));
 	}
 
 	handleCardNumInput(e) {
@@ -54,9 +65,12 @@ class PayByCard extends React.Component {
 			() => {
 				if (this.state.cardNum.filter((num) => num).length > 3) {
 					const cardNum = this.state.cardNum.join('');
-					this.setState({
-						cardNumUnvalid: !this.validateCardNum(cardNum),
-					});
+					this.setState((state) => ({
+						unvalid: {
+							...state.unvalid,
+							cardNum: !this.validateCardNum(cardNum),
+						},
+					}));
 				}
 			}
 		);
@@ -101,24 +115,102 @@ class PayByCard extends React.Component {
 
 	handleExpirationChange(e) {
 		const type = e.target.dataset.type;
-		const newType = `${type[0].toUpperCase()}${type.substr(1)}`;
 		const val = e.target.value;
-		this.setState({
-			[`expiration${newType}`] : val,
-		});
+		this.setState(
+			(state) => ({
+				expiration: {
+					...state.expiration,
+					[type]: val,
+				},
+			}),
+			() => {
+				const { year, month } = this.state.expiration;
+				if (!Number.isNaN(+year) && !Number.isNaN(+month)) {
+					this.setState((state)=> ({
+						unvalid: {
+							...state.unvalid,
+							expiration: false,
+						}
+					}));
+				}
+			}
+		);
 	}
 
 	handleSafeCodeChange(e) {
 		if (Number.isNaN(+e.target.value)) {
-			this.setState({
-				safeCodeUnvalid: true,
-			});
+			this.setState((state)=> ({
+				unvalid: {
+					...state.unvalid,
+					safeCode: true,
+				}
+			}));
 			return;
 		}
-		this.setState({
-			safeCodeUnvalid: false,
+		this.setState((state)=> ({
+			unvalid: {
+				...state.unvalid,
+				safeCode: false,
+			},
 			safeCode: e.target.value,
-		});
+		}));
+	}
+
+	handleSubmit() {
+		const cardNum = this.state.cardNum.join('');
+		const err = [];
+		if (!this.state.installment) {
+			this.setState((state) => ({
+				unvalid: {
+					...state.unvalid,
+					installment: true,
+				},
+			}));
+			err.push('installment');
+		}
+		if (!this.validateCardNum(cardNum)) {
+			this.setState((state) => ({
+				unvalid: {
+					...state.unvalid,
+					cardNum: true,
+				},
+			}));
+			err.push('card-num');
+		}
+		if (Number.isNaN(+this.state.expiration.year) || Number.isNaN(+this.state.expiration.month)) {
+			this.setState((state) => ({
+				unvalid: {
+					...state.unvalid,
+					expiration: true,
+				},
+			}));
+			err.push('expiration');
+		}
+		if (this.state.safeCode.length < 3 || this.state.safeCodeUnvalid) {
+			this.setState((state) => ({
+				unvalid: {
+					...state.unvalid,
+					safeCode: true,
+				},
+			}));
+			err.push('safe-code');
+		}
+		if (!this.props.confirmCheck) {
+			this.props.handleSetUnvalid('confirmCheck', true);
+			err.push('confirm-check');
+		}
+		if (!this.props.validateEmail(this.props.email)) {
+			this.props.handleSetUnvalid('email', true);
+			err.push('email');
+		}
+		if (err.length > 0) {
+			return;
+		}
+		this.props.handleChangeStep('next');
+	}
+
+	componentDidMount() {
+		this.props.handleSubmitMethod(this.handleSubmit);
 	}
 
 	render() {
@@ -147,19 +239,19 @@ class PayByCard extends React.Component {
 			}
 		];
 		
-
 		return (
 			<>
 				<InstallmentCtrler
 					installments={installment}
 					checked={this.state.installment}
+					unvalid={this.state.unvalid.installment}
 					handleChange={this.handleInstallmentChange}
 					className="mb-4"
 				/>
 
 				<CardNumCtrler
 					inputFocused={this.state.cardNumInputFocused}
-					unvalid={this.state.cardNumUnvalid}
+					unvalid={this.state.unvalid.cardNum}
 					cardLabels={cardLabels}
 					cardLabelChecked={this.checkCardLabel(this.state.cardNum.join(''))}
 					handleNumInput={this.handleCardNumInput}
@@ -168,30 +260,21 @@ class PayByCard extends React.Component {
 				/>
 
 				<ExpirationDateCtrler
-					yearVal={this.state.expirationYear}
-					monthVal={this.state.expirationMonth}
+					yearVal={this.state.expiration.year}
+					monthVal={this.state.expiration.month}
+					unvalid={this.state.unvalid.expiration}
 					handleChange={this.handleExpirationChange}
 					className="mb-4"
 				/>
 
 				<SafeCodeCtrler
 					value={this.state.safeCode}
-					unvalid={this.state.safeCodeUnvalid}
+					unvalid={this.state.unvalid.safeCode}
 					handleChange={this.handleSafeCodeChange}
 					className="mb-4"
 				/>
 
-				<ConfirmCheckCtrler
-					email={this.props.email}
-					confirmCheck={this.props.confirmCheck}
-					handleEmailChange={this.props.handleEmailChange}
-					handleConfirmCheck={this.props.handleConfirmCheck}
-					className="mb-4"
-				/>
-
-				<BtnsToChangeStep
-					handleChangeStep={this.props.handleChangeStep}
-				/>
+				{this.props.children}
 			</>
 		);
 	}

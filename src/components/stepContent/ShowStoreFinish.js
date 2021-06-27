@@ -7,9 +7,7 @@ class ShowStoreFinish extends React.Component {
 			<>
 				<List
                     listItems={this.props.listItems}
-					listItemClassName="mb-4"
-					listItemContentClassName="fs-3"
-					className="mb-4"
+					className="show-store-finish-list mb-4"
                 />
 
 				<small className="d-flex">

@@ -13,7 +13,7 @@ class BtnsToChangeStep extends React.Component {
 
 				<button
 					className="btn btn-primary text-white"
-					onClick={() => this.props.handleChangeStep('next')}
+					onClick={this.props.handleSubmit}
 				>
 					<small>確認付款</small>
 				</button>

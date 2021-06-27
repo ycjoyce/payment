@@ -37,13 +37,22 @@ class ExpirationDateCtrler extends React.Component {
 		if (this.props.className) {
 			containerClassName += ` ${this.props.className}`;
 		}
+
+		let selectorClassName = 'form-select';
+		if (this.props.unvalid) {
+			selectorClassName += ' border-danger';
+		}
 		
 		return (
 			<div className={containerClassName}>
-				<BasicCtrler title="有效月年">
+				<BasicCtrler
+					title="有效月年"
+					unvalid={this.props.unvalid}
+					errorMsg="請選擇有效月年"
+				>
 					<div className="col-md-6 d-inline-flex align-items-center">
 						<select
-							className="form-select"
+							className={selectorClassName}
 							onChange={this.props.handleChange}
 							value={this.props.yearVal}
 							data-type="year"
@@ -52,7 +61,7 @@ class ExpirationDateCtrler extends React.Component {
 						</select>
 						<span className="mx-2">/</span>
 						<select
-							className="form-select"
+							className={selectorClassName}
 							onChange={this.props.handleChange}
 							value={this.props.monthVal}
 							data-type="month"
