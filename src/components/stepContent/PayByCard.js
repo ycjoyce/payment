@@ -3,6 +3,7 @@ import CardNumCtrler from '../controllers/CardNumCtrler';
 import InstallmentCtrler from '../controllers/InstallmentCtrler';
 import ExpirationDateCtrler from '../controllers/ExpirationDateCtrler';
 import SafeCodeCtrler from '../controllers/SafeCodeCtrler';
+import { valiCheckBeforeSubmit } from '../../assets/js/util';
 
 class PayByCard extends React.Component {
 	constructor(props) {
@@ -195,18 +196,7 @@ class PayByCard extends React.Component {
 			}));
 			err.push('safe-code');
 		}
-		if (!this.props.confirmCheck) {
-			this.props.handleSetUnvalid('confirmCheck', true);
-			err.push('confirm-check');
-		}
-		if (!this.props.validateEmail(this.props.email)) {
-			this.props.handleSetUnvalid('email', true);
-			err.push('email');
-		}
-		if (err.length > 0) {
-			return;
-		}
-		this.props.handleChangeStep('next');
+		valiCheckBeforeSubmit.call(this, err);
 	}
 
 	componentDidMount() {

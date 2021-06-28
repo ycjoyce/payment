@@ -1,5 +1,5 @@
 import React from 'react';
-import BasicCtrler from './BasicCtrler';
+import BasicSelector from './BasicSelector';
 
 class SelectStoreCtrler extends React.Component {
     render() {
@@ -8,38 +8,26 @@ class SelectStoreCtrler extends React.Component {
 			containerClassName += ` ${this.props.className}`;
         }
         
-        const placeholder = '選擇商店';
-        let stores = [
-            placeholder,
-            '7-11',
-            '全家',
-            '萊爾富',
-            'OK mart',
-        ];
-        stores = stores.map((store) => (
+        const stores = this.props.stores.map((store) => (
             <option
-                key={store}
-                value={store}
-                disabled={store === placeholder}
+                key={store.value}
+                value={store.value}
+                disabled={store.value === 'placeholder'}
             >
-                {store}
+                {store.title}
             </option>
         ));
 
         return (
-            <div className={containerClassName}>
-                <BasicCtrler title="付款超商">
-                    <div className="col-md-6">
-                        <select
-                            value={this.props.value}
-                            className="form-select"
-                            onChange={this.props.handleChange}
-                        >
-                            {stores}            
-                        </select>
-                    </div>
-                </BasicCtrler>
-            </div>
+            <BasicSelector
+				className={containerClassName}
+				title="付款超商"
+				value={this.props.value}
+				unvalid={this.props.unvalid}
+				errorMsg="請選擇付款超商"
+				options={stores}
+				handleChange={this.props.handleChange}
+			/>
         );
     }
 }

@@ -43,24 +43,33 @@ class MainArea extends React.Component {
 		this.setState({ payMethod });
 	}
 
+	initConfirmData() {
+		this.setState({
+			email: '',
+			confirmCheck: false,
+			unvalid: {
+				email: false,
+				confirmCheck: false,
+			},
+		});
+	}
+
 	handleChangeStep(direction) {
-		switch (direction) {
-			case 'next':
-				if (this.state.step < this.stepLength) {
-					this.setState((state) => (
-						{ step: state.step + 1 }
-					));
-				}
-				break;
-			case 'prev':
-				if (this.state.step > 1) {
-					this.setState((state) => (
-						{ step: state.step - 1 }
-					));
-				}
-				break;
-			default:
-				break;
+		if (!['next', 'prev'].includes(direction)) {
+			return;
+		}
+		this.initConfirmData();
+		if (direction === 'next' && this.state.step < this.stepLength) {
+			this.setState((state) => (
+				{ step: state.step + 1 }
+			));
+			return;
+		}
+		if (direction === 'prev' && this.state.step > 1) {
+			this.setState((state) => (
+				{ step: state.step - 1 }
+			));
+			return;
 		}
 	}
 
@@ -190,12 +199,26 @@ class MainArea extends React.Component {
 						</PayByCard>
 					),
 					'convenience-store': (
-						<PayByStore>
+						<PayByStore
+							email={this.state.email}
+							confirmCheck={this.state.confirmCheck}
+							validateEmail={this.validateEmail}
+							handleSubmitMethod={this.handleSubmitMethod}
+							handleChangeStep={this.handleChangeStep}
+							handleSetUnvalid={this.handleSetUnvalid}
+						>
 							{confirmArea}
 						</PayByStore>
 					),
 					'web-atm': (
-						<PayByWebATM>
+						<PayByWebATM
+							email={this.state.email}
+							confirmCheck={this.state.confirmCheck}
+							validateEmail={this.validateEmail}
+							handleSubmitMethod={this.handleSubmitMethod}
+							handleChangeStep={this.handleChangeStep}
+							handleSetUnvalid={this.handleSetUnvalid}
+						>
 							{confirmArea}
 						</PayByWebATM>
 					),
