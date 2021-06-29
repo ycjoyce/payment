@@ -1,10 +1,15 @@
-export function valiCheckBeforeSubmit (err) {
+export function validateEmail (email) {
+    const rule = /^\w+((-\w+)|(\.\w+))*@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
+    return rule.test(email);
+}
+
+export function validCheckBeforeSubmit (err) {
     const newErr = err.slice();
     if (!this.state.confirmCheck) {
         this.handleSetUnvalid('confirmCheck', true);
         newErr.push('confirm-check');
     }
-    if (!this.validateEmail(this.state.email)) {
+    if (!validateEmail(this.state.email)) {
         this.handleSetUnvalid('email', true);
         newErr.push('email');
     }
@@ -12,4 +17,4 @@ export function valiCheckBeforeSubmit (err) {
         return;
     }
     this.handleChangeStep('next');
-};
+}

@@ -3,6 +3,30 @@ import EmailCtrler from './EmailCtrler';
 import BasicCtrler from './BasicCtrler';
 
 class ConfirmCheckCtrler extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			confirmCheck: false,
+			confirmCheckUnvalid: false,
+		};
+
+		this.setEmail = this.setEmail.bind(this);
+		this.handleConfirmCheck = this.handleConfirmCheck.bind(this);
+	}
+
+	setEmail(data) {
+		this.props.getData(data);
+	}
+
+	handleConfirmCheck(e) {
+		const data = {
+			confirmCheck: e.target.checked,
+			confirmCheckUnvalid: !e.target.checked,
+		};
+		this.setState(data);
+		this.props.getData(data);
+	}
+
 	render() {
 		let containerClassName = 'confirm-check-ctrler';
 		if (this.props.className) {
@@ -12,9 +36,8 @@ class ConfirmCheckCtrler extends React.Component {
 		return (
 			<div className={containerClassName}>
 				<EmailCtrler
-					value={this.props.email}
 					unvalid={this.props.emailUnvalid}
-					handleChange={this.props.handleEmailChange}
+					getEmail={this.setEmail}
 					className="mb-4"
 				/>
 				
@@ -26,7 +49,7 @@ class ConfirmCheckCtrler extends React.Component {
 						<input
 							type="checkbox"
 							checked={this.props.confirmCheck}
-							onChange={this.props.handleConfirmCheck}
+							onChange={this.handleConfirmCheck}
 							className="form-check-input confirm-check-ctrler me-2 flex-shrink-0"
 						/>
 						<p className="form-check-label mb-0">

@@ -7,7 +7,7 @@ import ShowFinish from './stepContent/ShowFinish';
 import ShowStoreFinish from './stepContent/ShowStoreFinish';
 import ConfirmCheckCtrler from './controllers/ConfirmCheckCtrler';
 import BtnsToChangeStep from './BtnsToChangeStep';
-import { valiCheckBeforeSubmit } from '../assets/js/util';
+import { validCheckBeforeSubmit } from '../assets/js/util';
 
 class MainContentBox extends React.Component {
 	constructor(props) {
@@ -45,11 +45,9 @@ class MainContentBox extends React.Component {
 		this.handleChangeStep = this.handleChangeStep.bind(this);
 		this.getSubmitMethod = this.getSubmitMethod.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
-		this.handleEmailChange = this.handleEmailChange.bind(this);
-		this.handleConfirmCheck = this.handleConfirmCheck.bind(this);
-		this.handleSetUnvalid = this.handleSetUnvalid.bind(this);
 		this.getSubmittedData = this.getSubmittedData.bind(this);
 		this.handleBackToFirstStep = this.handleBackToFirstStep.bind(this);
+		this.getDataFromConfirmCheck = this.getDataFromConfirmCheck.bind(this);
 	}
 
 	componentDidMount() {
@@ -183,43 +181,22 @@ class MainContentBox extends React.Component {
 			return;
 		}
 		const err = this.state.submitMethod();
-		valiCheckBeforeSubmit.call(this, err);
+		validCheckBeforeSubmit.call(this, err);
 	}
 
-	handleEmailChange(e) {
+	getDataFromConfirmCheck({
+		email = this.state.email,
+		emailUnvalid = this.state.unvalid.email,
+		confirmCheck = this.state.confirmCheck,
+		confirmCheckUnvalid = this.state.unvalid.confirmCheck,
+	}) {
 		this.setState((state) => ({
-			email: e.target.value,
+			email,
+			confirmCheck,
 			unvalid: {
 				...state.unvalid,
-				email: !this.validateEmail(e.target.value),
-			},
-		}));
-	}
-
-	validateEmail(email) {
-		const rule = /^\w+((-\w+)|(\.\w+))*@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
-		return rule.test(email);
-	}
-
-	handleConfirmCheck(e) {
-		this.setState({
-			confirmCheck: e.target.checked,
-		});
-		if (e.target.checked) {
-			this.setState((state) => ({
-				unvalid: {
-					...state.unvalid,
-					confirmCheck: false,
-				},
-			}));
-		}
-	}
-
-	handleSetUnvalid(col, val) {
-		this.setState((state) => ({
-			unvalid: {
-				...state.unvalid,
-				[col]: val,
+				email: emailUnvalid,
+				confirmCheck: confirmCheckUnvalid,
 			},
 		}));
 	}
@@ -251,12 +228,9 @@ class MainContentBox extends React.Component {
 					this.props.stepMap[this.props.curStep].value === 'fill-in-info' &&
 					<>
 						<ConfirmCheckCtrler
-							email={this.state.email}
 							emailUnvalid={this.state.unvalid.email}
-							confirmCheck={this.state.confirmCheck}
 							confirmCheckUnvalid={this.state.unvalid.confirmCheck}
-							handleEmailChange={this.handleEmailChange}
-							handleConfirmCheck={this.handleConfirmCheck}
+							getData={this.getDataFromConfirmCheck}
 							className="mb-4"
 						/>
 
