@@ -3,6 +3,7 @@ import CardNumCtrler from '../controllers/CardNumCtrler';
 import InstallmentCtrler from '../controllers/InstallmentCtrler';
 import ExpirationDateCtrler from '../controllers/ExpirationDateCtrler';
 import SafeCodeCtrler from '../controllers/SafeCodeCtrler';
+import { setStateWithData } from '../../assets/js/util';
 
 class PayByCard extends React.Component {
 	constructor(props) {
@@ -23,22 +24,13 @@ class PayByCard extends React.Component {
 				safeCode: false,
 			},
 		};
-		this.handleInstallmentChange = this.handleInstallmentChange.bind(this);
+
 		this.handleCardNumInput = this.handleCardNumInput.bind(this);
 		this.handleCardNumInputFocus = this.handleCardNumInputFocus.bind(this);
 		this.handleExpirationChange = this.handleExpirationChange.bind(this);
 		this.handleSafeCodeChange = this.handleSafeCodeChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
-	}
-
-	handleInstallmentChange(e) {
-		this.setState((state) => ({
-			installment: e.target.value,
-			unvalid: {
-				...state.unvalid,
-				installment: false,
-			},
-		}));
+		this.getDataFromCtrlers = this.getDataFromCtrlers.bind(this);
 	}
 
 	handleCardNumInput(e) {
@@ -198,6 +190,10 @@ class PayByCard extends React.Component {
 		return err;
 	}
 
+	getDataFromCtrlers(data) {
+		setStateWithData.call(this, data);
+	}
+
 	componentDidMount() {
 		this.props.handleSubmitMethod(this.handleSubmit);
 	}
@@ -232,9 +228,8 @@ class PayByCard extends React.Component {
 			<>
 				<InstallmentCtrler
 					installments={installment}
-					checked={this.state.installment}
 					unvalid={this.state.unvalid.installment}
-					handleChange={this.handleInstallmentChange}
+					getData={this.getDataFromCtrlers}
 					className="mb-4"
 				/>
 

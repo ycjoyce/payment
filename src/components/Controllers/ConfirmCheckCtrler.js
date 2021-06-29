@@ -7,7 +7,9 @@ class ConfirmCheckCtrler extends React.Component {
 		super(props);
 		this.state = {
 			confirmCheck: false,
-			confirmCheckUnvalid: false,
+			unvalid: {
+				confirmCheckUnvalid: false,
+			},
 		};
 
 		this.setEmail = this.setEmail.bind(this);
@@ -21,7 +23,9 @@ class ConfirmCheckCtrler extends React.Component {
 	handleConfirmCheck(e) {
 		const data = {
 			confirmCheck: e.target.checked,
-			confirmCheckUnvalid: !e.target.checked,
+			unvalid: {
+				confirmCheck: !e.target.checked,
+			},
 		};
 		this.setState(data);
 		this.props.getData(data);

@@ -2,6 +2,25 @@ import React from 'react';
 import BasicCtrler from './BasicCtrler';
 
 class InstallmentCtrler extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			installment: '',
+		};
+
+		this.handleInstallmentChange = this.handleInstallmentChange.bind(this);
+	}
+
+	handleInstallmentChange(e) {
+		this.setState({ installment: e.target.value });
+		this.props.getData({
+			installment: e.target.value,
+			unvalid: {
+				installment: false,
+			},
+		});
+	}
+
 	render() {
 		let containerClassName = 'installment-ctrler';
 		if (this.props.className) {
@@ -17,8 +36,8 @@ class InstallmentCtrler extends React.Component {
 					type="radio"
 					name="installment"
 					value={item.value}
-					checked={item.value === this.props.checked}
-					onChange={this.props.handleChange}
+					checked={item.value === this.state.installment}
+					onChange={this.handleInstallmentChange}
 					className="me-2 form-check-input"
 				/>
 				{item.title}

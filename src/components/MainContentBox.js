@@ -7,7 +7,7 @@ import ShowFinish from './stepContent/ShowFinish';
 import ShowStoreFinish from './stepContent/ShowStoreFinish';
 import ConfirmCheckCtrler from './controllers/ConfirmCheckCtrler';
 import BtnsToChangeStep from './BtnsToChangeStep';
-import { validCheckBeforeSubmit } from '../assets/js/util';
+import { validCheckBeforeSubmit, setStateWithData } from '../assets/js/util';
 
 class MainContentBox extends React.Component {
 	constructor(props) {
@@ -184,21 +184,25 @@ class MainContentBox extends React.Component {
 		validCheckBeforeSubmit.call(this, err);
 	}
 
-	getDataFromConfirmCheck({
-		email = this.state.email,
-		emailUnvalid = this.state.unvalid.email,
-		confirmCheck = this.state.confirmCheck,
-		confirmCheckUnvalid = this.state.unvalid.confirmCheck,
-	}) {
-		this.setState((state) => ({
-			email,
-			confirmCheck,
-			unvalid: {
-				...state.unvalid,
-				email: emailUnvalid,
-				confirmCheck: confirmCheckUnvalid,
-			},
-		}));
+	// getDataFromConfirmCheck({
+	// 	email = this.state.email,
+	// 	emailUnvalid = this.state.unvalid.email,
+	// 	confirmCheck = this.state.confirmCheck,
+	// 	confirmCheckUnvalid = this.state.unvalid.confirmCheck,
+	// }) {
+	// 	this.setState((state) => ({
+	// 		email,
+	// 		confirmCheck,
+	// 		unvalid: {
+	// 			...state.unvalid,
+	// 			email: emailUnvalid,
+	// 			confirmCheck: confirmCheckUnvalid,
+	// 		},
+	// 	}));
+	// }
+
+	getDataFromConfirmCheck(data) {
+		setStateWithData.call(this, data);
 	}
 
 	render() {

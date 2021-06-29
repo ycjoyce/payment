@@ -7,7 +7,9 @@ class EmailCtrler extends React.Component {
 		super(props);
 		this.state = {
 			email: '',
-			emailUnvalid: false,
+			unvalid: {
+				email: false,
+			},
 		};
 		this.handleEmailChange = this.handleEmailChange.bind(this);
 	}
@@ -15,7 +17,9 @@ class EmailCtrler extends React.Component {
 	handleEmailChange(e) {
 		const data = {
 			email: e.target.value,
-			emailUnvalid: !validateEmail(e.target.value),
+			unvalid: {
+				email: !validateEmail(e.target.value),
+			},
 		};
 		this.setState(data);
 		this.props.getEmail(data);
@@ -27,7 +31,7 @@ class EmailCtrler extends React.Component {
 			containerClassName += ` ${this.props.className}`;
 		}
 		let inputClassName = 'form-control';
-		if (this.props.unvalid || this.state.unvalid) {
+		if (this.props.unvalid || this.state.unvalid.email) {
 			inputClassName += ' border-danger';
 		}
 
@@ -36,7 +40,7 @@ class EmailCtrler extends React.Component {
 				<BasicCtrler
 					title="填寫付款人信箱"
 					errorMsg="請輸入正確信箱"
-					unvalid={this.props.unvalid || this.state.unvalid}
+					unvalid={this.props.unvalid || this.state.unvalid.email}
 				>
 					<div className="col-md-6">
 						<input
