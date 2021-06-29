@@ -1,6 +1,5 @@
 import React from 'react';
 import SelectStoreCtrler from '../controllers/SelectStoreCtrler';
-import { valiCheckBeforeSubmit } from '../../assets/js/util';
 
 class PayByStore extends React.Component {
 	constructor(props) {
@@ -36,11 +35,13 @@ class PayByStore extends React.Component {
 			}));
 			err.push('store');
 		}
-		valiCheckBeforeSubmit.call(this, err);
-		this.props.handleSubmitData({
-			store: this.stores.find((store) => store.value === this.state.store).title,
-			time: Date.now(),
-		});
+		if (err.length < 1) {
+			this.props.submitData({
+				store: this.stores.find((store) => store.value === this.state.store).title,
+				time: Date.now(),
+			});
+		}
+		return err;
 	}
 
 	componentDidMount() {
@@ -72,17 +73,13 @@ class PayByStore extends React.Component {
 		];
 		
 		return (
-			<>
-				<SelectStoreCtrler
-					stores={this.stores}
-					value={this.state.store}
-					unvalid={this.state.unvalid.store}
-					handleChange={this.handleStoreSelect}
-					className="mb-4"
-				/>
-
-				{this.props.children}
-			</>
+			<SelectStoreCtrler
+				stores={this.stores}
+				value={this.state.store}
+				unvalid={this.state.unvalid.store}
+				handleChange={this.handleStoreSelect}
+				className="mb-4"
+			/>
 		);
 	}
 }

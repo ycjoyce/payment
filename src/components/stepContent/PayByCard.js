@@ -3,7 +3,6 @@ import CardNumCtrler from '../controllers/CardNumCtrler';
 import InstallmentCtrler from '../controllers/InstallmentCtrler';
 import ExpirationDateCtrler from '../controllers/ExpirationDateCtrler';
 import SafeCodeCtrler from '../controllers/SafeCodeCtrler';
-import { valiCheckBeforeSubmit } from '../../assets/js/util';
 
 class PayByCard extends React.Component {
 	constructor(props) {
@@ -196,7 +195,7 @@ class PayByCard extends React.Component {
 			}));
 			err.push('safe-code');
 		}
-		valiCheckBeforeSubmit.call(this, err);
+		return err;
 	}
 
 	componentDidMount() {
@@ -263,8 +262,6 @@ class PayByCard extends React.Component {
 					handleChange={this.handleSafeCodeChange}
 					className="mb-4"
 				/>
-
-				{this.props.children}
 			</>
 		);
 	}

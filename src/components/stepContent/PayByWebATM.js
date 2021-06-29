@@ -1,6 +1,5 @@
 import React from 'react';
 import SelectBankCtrler from '../controllers/SelectBankCtrler';
-import { valiCheckBeforeSubmit } from '../../assets/js/util';
 
 class PayByWebATM extends React.Component {
 	constructor(props) {
@@ -36,7 +35,7 @@ class PayByWebATM extends React.Component {
 			}));
 			err.push('bank');
 		}
-		valiCheckBeforeSubmit.call(this, err);
+		return err;
 	}
 
 	componentDidMount() {
@@ -45,16 +44,12 @@ class PayByWebATM extends React.Component {
 
   	render() {
 		return (
-			<>
-				<SelectBankCtrler
-					value={this.state.bank}
-					unvalid={this.state.unvalid.bank}
-					handleChange={this.handleBankSelect}
-					className="mb-4"
-				/>
-
-				{this.props.children}
-			</>
+			<SelectBankCtrler
+				value={this.state.bank}
+				unvalid={this.state.unvalid.bank}
+				handleChange={this.handleBankSelect}
+				className="mb-4"
+			/>
 		);
 	}
 }
