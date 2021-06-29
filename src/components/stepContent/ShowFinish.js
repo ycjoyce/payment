@@ -16,7 +16,10 @@ class ShowFinish extends React.Component {
 					稍後將寄送訂單詳細資訊至您的E-mail
 				</p>
 
-				<button className="btn btn-primary text-white">
+				<button
+					className="btn btn-primary text-white"
+					onClick={this.props.handleChangeStep}
+				>
 					<small>返回首頁</small>
 				</button>
 			</div>

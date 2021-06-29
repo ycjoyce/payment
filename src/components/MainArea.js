@@ -23,7 +23,14 @@ class MainArea extends React.Component {
 				confirmCheck: false,
 			},
 			submitMethod: null,
+			mainContentTop: 0,
 		};
+
+		this.storeSubmitData = {
+			store: '',
+			time: '',
+		};
+
 		this.handleStepClick = this.handleStepClick.bind(this);
 		this.handlePayMethodClick = this.handlePayMethodClick.bind(this);
 		this.handleChangeStep = this.handleChangeStep.bind(this);
@@ -32,6 +39,15 @@ class MainArea extends React.Component {
 		this.handleSubmitMethod = this.handleSubmitMethod.bind(this);
 		this.handleSetUnvalid = this.handleSetUnvalid.bind(this);
 		this.validateEmail = this.validateEmail.bind(this);
+		this.handleBackToFirstStep = this.handleBackToFirstStep.bind(this);
+		this.handleStoreSubmitData = this.handleStoreSubmitData.bind(this);
+		this.handleGetMainContentTop = this.handleGetMainContentTop.bind(this);
+	}
+
+	componentDidUpdate() {
+		if (this.stepMap[this.state.step].value === 'finish') {
+			this.props.handleFinish(true);
+		}
 	}
 
 	handleStepClick(e) {
@@ -54,12 +70,23 @@ class MainArea extends React.Component {
 		});
 	}
 
+	handleBackToFirstStep () {
+		this.setState({
+			payMethod: '',
+		});
+		this.initConfirmData();
+		this.setState({
+			step: 1,
+		});
+		this.props.handleFinish(false);
+	}
+
 	handleChangeStep(direction) {
 		if (!['next', 'prev'].includes(direction)) {
 			return;
 		}
 		this.initConfirmData();
-		if (direction === 'next' && this.state.step < this.stepLength) {
+		if (direction === 'next' && this.state.step < Object.keys(this.stepMap).length) {
 			this.setState((state) => (
 				{ step: state.step + 1 }
 			));
@@ -117,6 +144,15 @@ class MainArea extends React.Component {
 		}));
 	}
 
+	handleStoreSubmitData(data) {
+		this.storeSubmitData = data;
+	}
+
+	handleGetMainContentTop(val) {
+		this.props.handleGetTop(val);
+		this.setState({ mainContentTop: val });
+	}
+
 	render() {
 		const payMethods = [
 			{
@@ -135,18 +171,21 @@ class MainArea extends React.Component {
 				img: require('../assets/img/web-atm.svg'),
 			},
 		];
+
+		const submitDataTime = new Date(this.storeSubmitData.time);
+
 		const showStoreFinishListItems = [
 			{
 				title: '付款超商',
-				content: '全家便利商店',
+				content: this.storeSubmitData.store,
 			},
 			{
 				title: '付款代碼',
-				content: 'HSD5DSK2349',
+				content: this.storeSubmitData.time,
 			},
 			{
 				title: '付款期限',
-				content: '2021-07-25 23:59:59',
+				content: `${submitDataTime.toLocaleDateString()} ${submitDataTime.toLocaleTimeString()}`,
 			},
 		];
 
@@ -169,7 +208,7 @@ class MainArea extends React.Component {
 			</>
 		);
 
-		const stepMap = {
+		this.stepMap = {
 			1: {
 				title: '選擇付款方式',
 				value: 'choose-pay-method',
@@ -206,6 +245,7 @@ class MainArea extends React.Component {
 							handleSubmitMethod={this.handleSubmitMethod}
 							handleChangeStep={this.handleChangeStep}
 							handleSetUnvalid={this.handleSetUnvalid}
+							handleSubmitData={this.handleStoreSubmitData}
 						>
 							{confirmArea}
 						</PayByStore>
@@ -232,46 +272,50 @@ class MainArea extends React.Component {
 				value: 'finish',
 				content: {
 					'default-show': (
-						<ShowFinish/>
+						<ShowFinish
+							handleChangeStep={this.handleBackToFirstStep}
+						/>
 					),
 					store: (
 						<ShowStoreFinish
 							listItems={showStoreFinishListItems}
+							handleChangeStep={this.handleBackToFirstStep}
 						/>
 					),
 				},
 			},
 		};
+
 		const curStep = this.state.step;
-		const lastStepTitle = stepMap[Object.keys(stepMap).pop()].title;
-		const titleStep = stepMap[curStep].title === lastStepTitle ? '' : `STEP${curStep}. `;
+		const lastStepTitle = this.stepMap[Object.keys(this.stepMap).pop()].title;
+		const titleStep = this.stepMap[curStep].title === lastStepTitle ? '' : `STEP${curStep}. `;
 		let title = '';
 		let subtitle = '';
-		let content = stepMap[curStep].content;
+		let content = this.stepMap[curStep].content;
 		
-		if (stepMap[curStep].value === 'fill-in-info') {
+		if (this.stepMap[curStep].value === 'fill-in-info') {
 			subtitle = payMethods.find((method) => method.value === this.state.payMethod).title;
-			content = stepMap[curStep].content[this.state.payMethod];
+			content = this.stepMap[curStep].content[this.state.payMethod];
 		}
 
-		if (stepMap[curStep].value === 'finish') {
+		if (this.stepMap[curStep].value === 'finish') {
 			if (this.state.payMethod === 'convenience-store') {
-				title = stepMap[curStep].title.store;
-				content = stepMap[curStep].content.store;
+				title = this.stepMap[curStep].title.store;
+				content = this.stepMap[curStep].content.store;
 			} else {
-				title = stepMap[curStep].title['default-show'];
-				content = stepMap[curStep].content['default-show'];
+				title = this.stepMap[curStep].title['default-show'];
+				content = this.stepMap[curStep].content['default-show'];
 			}
 		} else {
-			title = `${titleStep} ${stepMap[curStep].title}`
+			title = `${titleStep} ${this.stepMap[curStep].title}`
 		}
 
-		this.stepLength = Object.keys(stepMap).length;
-
 		return (
-			<main className={this.props.className}>
+			<main
+				className={this.props.className}
+			>
 				<StepBar
-					steps={this.stepLength}
+					steps={Object.keys(this.stepMap).length}
 					curStep={curStep}
 					className="justify-content-center my-4"
 				/>
@@ -279,6 +323,7 @@ class MainArea extends React.Component {
 				<MainContentBox
 					title={title}
 					subtitle={subtitle}
+					handleGetTop={this.handleGetMainContentTop}
 				>
 					{content}
 				</MainContentBox>

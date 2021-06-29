@@ -3,6 +3,7 @@
         &-#{$key} {
             position: relative;
             padding: 0 10px;
+            z-index: 0;
 
             &::after {
                 content: '';

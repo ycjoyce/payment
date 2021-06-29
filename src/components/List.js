@@ -9,7 +9,7 @@ class List extends React.Component {
         
         const listItems = this.props.listItems.map((item) => (
             <li
-                className="list-item-content mb-0"
+                className="list-item mb-0"
                 key={item.title}
             >
                 {
@@ -18,7 +18,7 @@ class List extends React.Component {
                         {item.title}
                     </p>
                 }
-                <p className="list-item">
+                <p className="list-item-content">
                     {item.content}
                 </p>
             </li>

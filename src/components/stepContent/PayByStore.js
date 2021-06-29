@@ -37,6 +37,10 @@ class PayByStore extends React.Component {
 			err.push('store');
 		}
 		valiCheckBeforeSubmit.call(this, err);
+		this.props.handleSubmitData({
+			store: this.stores.find((store) => store.value === this.state.store).title,
+			time: Date.now(),
+		});
 	}
 
 	componentDidMount() {
@@ -44,7 +48,7 @@ class PayByStore extends React.Component {
 	}
 
   	render() {
-		const stores = [
+		this.stores = [
             {
                 value: 'placeholder',
                 title: '選擇商店',
@@ -70,7 +74,7 @@ class PayByStore extends React.Component {
 		return (
 			<>
 				<SelectStoreCtrler
-					stores={stores}
+					stores={this.stores}
 					value={this.state.store}
 					unvalid={this.state.unvalid.store}
 					handleChange={this.handleStoreSelect}

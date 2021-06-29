@@ -8,6 +8,8 @@ $dark: #4B4B4B;
 
 @import "~bootstrap/scss/bootstrap";
 
+@import './basic/basic';
+
 @import './components/stepBar';
 @import './components/text';
 @import './components/payMethod';
@@ -16,3 +18,5 @@ $dark: #4B4B4B;
 @import './components/formControl';
 @import './components/showFinish';
 @import './components/orderInfo';
+@import './components/decoration';
+@import './components/mainContent';

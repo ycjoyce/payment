@@ -1,0 +1,16 @@
+.decoration-item {
+    display: inline-block;
+
+    &[data-side='top'] {
+        transform: rotate(-40deg);
+    }
+
+    &[data-side='bottom'] {
+        transform: rotate(40deg);
+    }
+}
+
+.decoration-bg-box {
+    width: 30px;
+    height: 50%;
+}
