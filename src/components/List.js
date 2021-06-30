@@ -6,6 +6,9 @@ class List extends React.Component {
         if (this.props.className) {
             containerClassName += ` ${this.props.className}`;
         }
+        if (this.props.hide) {
+            containerClassName += ` hide`;
+        }
         
         const listItems = this.props.listItems.map((item) => (
             <li
@@ -18,7 +21,7 @@ class List extends React.Component {
                         {item.title}
                     </p>
                 }
-                <p className="list-item-content">
+                <p className="list-item-content mb-0">
                     {item.content}
                 </p>
             </li>

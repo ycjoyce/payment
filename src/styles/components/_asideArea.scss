@@ -1,0 +1,12 @@
+.aside-area {
+    position: relative;
+}
+
+@include media-breakpoint-down(sm) { 
+    .aside-area {
+        top: calc(50px + #{map-get($spacers, 4)}) !important;
+        left: 0;
+        position: absolute;
+        z-index: 2;
+    }
+}

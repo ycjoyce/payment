@@ -1,3 +1,12 @@
+.order-info {
+    background-color: map-get($theme-colors, info);
+}
+
+.order-info-title {
+    font-size: map-get($font-sizes, 5);
+    margin-bottom: map-get($spacers, 2);
+}
+
 .order-info-list {
     .list-item {
         margin-bottom: map-get($spacers, 2);
@@ -5,5 +14,36 @@
 
     .list-item-title {
         font-weight: $font-weight-light;
+    }
+}
+
+@include media-breakpoint-down(sm) { 
+    .order-info {
+        background-color: transparent;
+        display: inline-flex;
+    }
+
+    .order-info-title {
+        background-color: map-get($theme-colors, info);
+        order: 2;
+        flex-basis: 20px;
+        padding: map-get($spacers, 2);
+        align-self: start;
+        border-radius: 0 $border-radius-lg $border-radius-lg 0;
+        font-size: map-get($font-sizes, 6);
+        cursor: pointer;
+        box-shadow: .25rem .125rem .25rem rgba($black, .075);
+    }
+
+    .order-info-list {
+        background-color: map-get($theme-colors, info);
+        order: 1;
+        padding-left: map-get($spacers, 3) !important;
+        box-shadow: $box-shadow-sm;
+        border-radius: 0 0 $border-radius-lg 0;
+
+        &.hide {
+            display: none;
+        }
     }
 }

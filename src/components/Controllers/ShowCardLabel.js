@@ -1,6 +1,23 @@
 import React from 'react';
 
 class ShowCardLabel extends React.Component {
+	checkCardLabel(cardNum) {
+		const firstTwoChar = cardNum.substr(0, 2);
+		const firstThreeChar = cardNum.substr(0, 3);
+		const firstFourChar = cardNum.substr(0, 4);
+
+		if (cardNum.startsWith('4')) {
+			return 'visa';
+		}
+		if (+firstTwoChar >= 51 && +firstTwoChar <= 55) {
+			return 'master-card';
+		}
+		if (firstFourChar === '1800' || firstFourChar === '2131' || (+firstThreeChar >= 300 && +firstThreeChar <= 399)) {
+			return 'jcb';
+		}
+		return false;
+	}
+
 	render() {
 		let containerClassName = 'card-label-box d-flex';
 		if (this.props.className) {
@@ -9,7 +26,7 @@ class ShowCardLabel extends React.Component {
 
 		const labels = this.props.labels.map((label, index, arr) => {
 			let className = 'card-label form-control-sketch';
-			if (this.props.checked === label.title) {
+			if (this.checkCardLabel(this.props.cardNum) === label.title) {
 				className += ' light';
 			}
 			if (index !== arr.length - 1) {

@@ -54,9 +54,14 @@ class MainArea extends React.Component {
 	}
 
 	render() {
+		let containerClassName = 'main-area';
+		if (this.props.className) {
+			containerClassName += ` ${this.props.className}`;
+		}
+
 		return (
 			<main
-				className={this.props.className}
+				className={containerClassName}
 			>
 				<StepBar
 					steps={Object.keys(this.stepMap).length}

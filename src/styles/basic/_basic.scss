@@ -23,3 +23,14 @@ body {
 .outer-container {
     height: 100%;
 }
+
+@include media-breakpoint-down(sm) {
+    #root {
+        padding-left: 0;
+        padding-right: 0;
+    }
+    
+    .outer-container {
+        height: 95%;
+    }
+}

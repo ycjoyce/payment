@@ -79,23 +79,6 @@ class CardNumCtrler extends React.Component {
 		});
 	}
 
-	checkCardLabel(cardNum) {
-		const firstTwoChar = cardNum.substr(0, 2);
-		const firstThreeChar = cardNum.substr(0, 3);
-		const firstFourChar = cardNum.substr(0, 4);
-
-		if (cardNum.startsWith('4')) {
-			return 'visa';
-		}
-		if (+firstTwoChar >= 51 && +firstTwoChar <= 55) {
-			return 'master-card';
-		}
-		if (firstFourChar === '1800' || firstFourChar === '2131' || (+firstThreeChar >= 300 && +firstThreeChar <= 399)) {
-			return 'jcb';
-		}
-		return false;
-	}
-
   	render() {
 		const inputChain = [];
 		const chainClassName = 'd-flex align-items-center';
@@ -111,6 +94,9 @@ class CardNumCtrler extends React.Component {
 		}
 
 		for (let i = 0; i < 4; i++) {
+			if (i !== 3) {
+				inputClassName += ' me-2 me-sm-0 px-1 px-sm-2';
+			}
 			inputChain.push(
 				<input
 					type="text"
@@ -126,7 +112,7 @@ class CardNumCtrler extends React.Component {
 			if (i !== 3) {
 				inputChain.push(
 					<span
-						className="mx-1"
+						className="mx-1 d-none d-sm-block"
 						key={`${i}-span`}
 					>
 						—
@@ -148,7 +134,7 @@ class CardNumCtrler extends React.Component {
 						</div>
 						<ShowCardLabel
 							labels={this.props.cardLabels}
-							checked={this.checkCardLabel(this.state.cardNum.join(''))}
+							cardNum={this.state.cardNum.join('')}
 							className="ms-lg-3 mt-lg-0 mt-2"
 						/>
 					</div>

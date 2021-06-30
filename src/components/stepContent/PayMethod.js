@@ -3,7 +3,7 @@ import React from 'react';
 class PayMethod extends React.Component {
 	render() {
 		const methodBoxes = this.props.methods.map((method) => {
-			let className = 'pay-method-box btn col-sm-3 col-lg-2 mx-2 my-2 my-sm-0';
+			let className = 'pay-method-box btn col-5 col-lg-3 mx-2 my-2 my-lg-0';
 			let imgClassName = 'pay-method-img d-block mx-auto';
 
 			if (this.props.checked === method.value) {
