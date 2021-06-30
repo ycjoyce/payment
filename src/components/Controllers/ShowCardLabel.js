@@ -2,6 +2,11 @@ import React from 'react';
 
 class ShowCardLabel extends React.Component {
 	render() {
+		let containerClassName = 'card-label-box d-flex';
+		if (this.props.className) {
+			containerClassName += ` ${this.props.className}`;
+		}
+
 		const labels = this.props.labels.map((label, index, arr) => {
 			let className = 'card-label form-control-sketch';
 			if (this.props.checked === label.title) {
@@ -21,11 +26,6 @@ class ShowCardLabel extends React.Component {
 				/>
 			);
 		});
-
-		let containerClassName = 'card-label-box d-flex';
-		if (this.props.className) {
-			containerClassName += ` ${this.props.className}`;
-		}
 
 		return (
 			<div className={containerClassName}>

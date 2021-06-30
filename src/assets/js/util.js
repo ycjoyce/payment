@@ -3,6 +3,20 @@ export function validateEmail (email) {
     return rule.test(email);
 }
 
+export function validateCardNum (cardNum) {
+    if (cardNum.length < 16) {
+        return false;
+    }
+
+    const newCardNum = cardNum.split('').map((num, index) => (
+        (index + 1) % 2 === 0 ? +num : +num * 2
+    )).map((num) => (
+        num > 9 ? `${num}`.split('').map((n) => +n) : num
+    )).flat().reduce((a, e) => a + e, 0);
+
+    return newCardNum % 10 === 0;
+}
+
 export function validCheckBeforeSubmit (err) {
     const newErr = err.slice();
     if (!this.state.confirmCheck) {

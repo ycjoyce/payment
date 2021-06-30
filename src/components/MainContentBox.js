@@ -184,23 +184,6 @@ class MainContentBox extends React.Component {
 		validCheckBeforeSubmit.call(this, err);
 	}
 
-	// getDataFromConfirmCheck({
-	// 	email = this.state.email,
-	// 	emailUnvalid = this.state.unvalid.email,
-	// 	confirmCheck = this.state.confirmCheck,
-	// 	confirmCheckUnvalid = this.state.unvalid.confirmCheck,
-	// }) {
-	// 	this.setState((state) => ({
-	// 		email,
-	// 		confirmCheck,
-	// 		unvalid: {
-	// 			...state.unvalid,
-	// 			email: emailUnvalid,
-	// 			confirmCheck: confirmCheckUnvalid,
-	// 		},
-	// 	}));
-	// }
-
 	getDataFromConfirmCheck(data) {
 		setStateWithData.call(this, data);
 	}
