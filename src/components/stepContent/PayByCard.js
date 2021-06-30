@@ -12,8 +12,8 @@ class PayByCard extends React.Component {
 			installment: '',
 			cardNum: '',
 			expiration: {
-				year: '選擇年',
-				month: '選擇月',
+				year: 'placeholder',
+				month: 'placeholder',
 			},
 			safeCode: '',
 			unvalid: {
@@ -24,53 +24,23 @@ class PayByCard extends React.Component {
 			},
 		};
 
-		this.handleExpirationChange = this.handleExpirationChange.bind(this);
-		this.handleSafeCodeChange = this.handleSafeCodeChange.bind(this);
+		this.cardLabels = [
+			{
+				title: 'visa',
+				img: require('../../assets/img/visa.svg'),
+			},
+			{
+				title: 'master-card',
+				img: require('../../assets/img/mastercard.svg'),
+			},
+			{
+				title: 'jcb',
+				img: require('../../assets/img/jcb.svg'),
+			}
+		];
+
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.getDataFromCtrlers = this.getDataFromCtrlers.bind(this);
-	}
-
-	handleExpirationChange(e) {
-		const type = e.target.dataset.type;
-		const val = e.target.value;
-		this.setState(
-			(state) => ({
-				expiration: {
-					...state.expiration,
-					[type]: val,
-				},
-			}),
-			() => {
-				const { year, month } = this.state.expiration;
-				if (!Number.isNaN(+year) && !Number.isNaN(+month)) {
-					this.setState((state)=> ({
-						unvalid: {
-							...state.unvalid,
-							expiration: false,
-						}
-					}));
-				}
-			}
-		);
-	}
-
-	handleSafeCodeChange(e) {
-		if (Number.isNaN(+e.target.value)) {
-			this.setState((state)=> ({
-				unvalid: {
-					...state.unvalid,
-					safeCode: true,
-				}
-			}));
-			return;
-		}
-		this.setState((state)=> ({
-			unvalid: {
-				...state.unvalid,
-				safeCode: false,
-			},
-			safeCode: e.target.value,
-		}));
 	}
 
 	handleSubmit() {
@@ -102,7 +72,7 @@ class PayByCard extends React.Component {
 			}));
 			err.push('expiration');
 		}
-		if (this.state.safeCode.length < 3 || this.state.safeCodeUnvalid) {
+		if (this.state.safeCode.length < 3 || Number.isNaN(+this.state.safeCode)) {
 			this.setState((state) => ({
 				unvalid: {
 					...state.unvalid,
@@ -144,23 +114,21 @@ class PayByCard extends React.Component {
 				/>
 
 				<CardNumCtrler
+					cardLabels={this.cardLabels}
 					unvalid={this.state.unvalid.cardNum}
 					getData={this.getDataFromCtrlers}
 					className="mb-4"
 				/>
 
 				<ExpirationDateCtrler
-					yearVal={this.state.expiration.year}
-					monthVal={this.state.expiration.month}
 					unvalid={this.state.unvalid.expiration}
-					handleChange={this.handleExpirationChange}
+					getData={this.getDataFromCtrlers}
 					className="mb-4"
 				/>
 
 				<SafeCodeCtrler
-					value={this.state.safeCode}
 					unvalid={this.state.unvalid.safeCode}
-					handleChange={this.handleSafeCodeChange}
+					getData={this.getDataFromCtrlers}
 					className="mb-4"
 				/>
 			</>

@@ -19,21 +19,6 @@ class CardNumCtrler extends React.Component {
 			this.inputRefs.push(React.createRef());
 		}
 
-		this.cardLabels = [
-			{
-				title: 'visa',
-				img: require('../../assets/img/visa.svg'),
-			},
-			{
-				title: 'master-card',
-				img: require('../../assets/img/mastercard.svg'),
-			},
-			{
-				title: 'jcb',
-				img: require('../../assets/img/jcb.svg'),
-			}
-		];
-
 		this.handleNumInput = this.handleNumInput.bind(this);
 		this.handleNumInputFocus = this.handleNumInputFocus.bind(this);
 	}
@@ -162,7 +147,7 @@ class CardNumCtrler extends React.Component {
 							{inputChain}
 						</div>
 						<ShowCardLabel
-							labels={this.cardLabels}
+							labels={this.props.cardLabels}
 							checked={this.checkCardLabel(this.state.cardNum.join(''))}
 							className="ms-lg-3 mt-lg-0 mt-2"
 						/>
