@@ -41,12 +41,12 @@
 - 步驟二：填寫付款資訊
     - 信用卡/金融卡
 ![步驟二：填寫付款資訊-信用卡/金融卡](https://i.imgur.com/5g4JhRx.png)
-![步驟二：填寫付款資訊-信用卡/金融卡-提示錯誤欄位](https://i.imgur.com/DkZfglL.png)
-> 提示錯誤欄位 
     - 超商付款
 ![步驟二：填寫付款資訊-超商付款](https://i.imgur.com/PuO5kr3.png)
     - Web ATM
 ![步驟二：填寫付款資訊-Web ATM](https://i.imgur.com/7NNf04P.png)
+    - 提示錯誤欄位
+![步驟二：填寫付款資訊-提示錯誤欄位](https://i.imgur.com/DkZfglL.png)
 
 - 步驟三：完成訂單頁面
     - 信用卡/金融卡、Web ATM
