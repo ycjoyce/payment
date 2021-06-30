@@ -1,5 +1,5 @@
 # 模擬付款流程網站
-基於 React.js 建立的旅館預約網站，UI 採用 Bootstrap 建立而成，並支援 RWD。
+基於 React.js 建立的模擬付款流程網站，UI 採用 Bootstrap 建立而成，並支援 RWD。
 
 ## 線上演示
 [Demo](https://ycjoyce.github.io/payment/)
