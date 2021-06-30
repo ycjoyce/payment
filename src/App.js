@@ -10,6 +10,23 @@ class App extends React.Component {
 			finish: false,
 			mainContentTop: 0,
 		};
+
+		// fake data
+		this.orderInfoContent = [
+			{
+				title: '商品名稱',
+				content: 'Iphone XR 手機殼 x 1',
+			},
+			{
+				title: '訂單編號',
+				content: '17485739',
+			},
+			{
+				title: '訂單金額',
+				content: 'NT$ 600',
+			}
+		];
+
 		this.handleFinish = this.handleFinish.bind(this);
 		this.handleGetMainContentTop = this.handleGetMainContentTop.bind(this);
 	}
@@ -30,6 +47,7 @@ class App extends React.Component {
 				<AsideArea
 					finish={this.state.finish}
 					top={this.state.mainContentTop}
+					orderInfoContent={this.orderInfoContent}
 					className="col-sm-3 align-self-start"
 				/>
 				<MainArea

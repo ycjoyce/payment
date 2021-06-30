@@ -106,6 +106,7 @@ class MainContentBox extends React.Component {
 				if (!this.submittedData) {
 					return undefined
 				}
+				const time = this.submittedData.time;
 				return <ShowStoreFinish
 					handleChangeStep={this.handleBackToFirstStep}
 					listItems={[
@@ -115,11 +116,11 @@ class MainContentBox extends React.Component {
 						},
 						{
 							title: '付款代碼',
-							content: this.submittedData.time,
+							content: time,
 						},
 						{
 							title: '付款期限',
-							content: `${new Date(this.submittedData.time).toLocaleDateString()} ${new Date(this.submittedData.time).toLocaleTimeString()}`,
+							content: `${new Date(time + 1000 * 60 * 60 * 24 * 7).toLocaleDateString()} ${new Date(time).toLocaleTimeString()}`,
 						},
 					]}
 				/>

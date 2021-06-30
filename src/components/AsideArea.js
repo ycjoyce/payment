@@ -33,21 +33,6 @@ class AsideArea extends React.Component {
 			containerClassName += ' d-flex justify-content-end';
 		}
 
-		const orderInfoContent = [
-			{
-				title: '商品名稱',
-				content: 'Iphone XR 手機殼 x 1',
-			},
-			{
-				title: '訂單編號',
-				content: '17485739',
-			},
-			{
-				title: '訂單金額',
-				content: 'NT$ 600',
-			}
-		];
-
 		return (
 			<aside
 				className={containerClassName}
@@ -70,7 +55,7 @@ class AsideArea extends React.Component {
 				{
 					!this.props.finish &&
 					<OrderInfo
-						listItems={orderInfoContent}
+						listItems={this.props.orderInfoContent}
 					/>
 				}
 			</aside>
