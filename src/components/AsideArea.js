@@ -47,16 +47,9 @@ class AsideArea extends React.Component {
 				
 				{
 					!this.props.finish &&
-					<>
-						<OrderInfo
-							listItems={orderInfoContent}
-						/>
-						<button className="btn btn-dark mt-4">
-							<small>
-								返回商店
-							</small>
-						</button>
-					</>
+					<OrderInfo
+						listItems={orderInfoContent}
+					/>
 				}
 			</aside>
 		);

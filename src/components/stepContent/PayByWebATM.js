@@ -1,4 +1,5 @@
 import React from 'react';
+import bankList from '../../assets/bankList.json';
 import SelectBankCtrler from '../controllers/SelectBankCtrler';
 
 class PayByWebATM extends React.Component {
@@ -10,18 +11,8 @@ class PayByWebATM extends React.Component {
 				bank: false,
 			},
 		};
-		this.handleBankSelect = this.handleBankSelect.bind(this);
-		this.handleSubmit = this.handleSubmit.bind(this);
-	}
 
-	handleBankSelect(e) {
-		this.setState((state) => ({
-			bank: e.target.value,
-			unvalid: {
-				...state.unvalid,
-				bank: false,
-			},
-		}));
+		this.handleSubmit = this.handleSubmit.bind(this);
 	}
 
 	handleSubmit() {
@@ -39,15 +30,15 @@ class PayByWebATM extends React.Component {
 	}
 
 	componentDidMount() {
-		this.props.handleSubmitMethod(this.handleSubmit);
+		this.props.handleSubmitMethod({ submitMethod: this.handleSubmit });
 	}
 
   	render() {
 		return (
 			<SelectBankCtrler
-				value={this.state.bank}
+				bankList={bankList}
 				unvalid={this.state.unvalid.bank}
-				handleChange={this.handleBankSelect}
+				getData={this.props.getData.bind(this)}
 				className="mb-4"
 			/>
 		);

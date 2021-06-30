@@ -10,34 +10,6 @@ class MainArea extends React.Component {
 			mainContentTop: 0,
 		};
 
-		this.handleChangeStep = this.handleChangeStep.bind(this);
-		this.handleBackToFirstStep = this.handleBackToFirstStep.bind(this);
-		this.handleGetMainContentTop = this.handleGetMainContentTop.bind(this);
-	}
-
-	componentDidUpdate() {
-		if (this.stepMap[this.state.step].value === 'finish') {
-			this.props.handleFinish(true);
-		}
-	}
-
-	handleChangeStep(step) {
-		this.setState({ step });
-	}
-
-	handleBackToFirstStep() {
-		this.setState({
-			step: 1,
-		});
-		this.props.handleFinish(false);
-	}
-
-	handleGetMainContentTop(val) {
-		this.props.handleGetTop(val);
-		this.setState({ mainContentTop: val });
-	}
-
-	render() {
 		this.stepMap = {
 			1: {
 				title: '選擇付款方式',
@@ -56,6 +28,32 @@ class MainArea extends React.Component {
 			},
 		};
 
+		this.handleChangeStep = this.handleChangeStep.bind(this);
+		this.handleBackToFirstStep = this.handleBackToFirstStep.bind(this);
+		this.handleGetMainContentTop = this.handleGetMainContentTop.bind(this);
+	}
+
+	componentDidUpdate() {
+		if (this.stepMap[this.state.step].value === 'finish') {
+			this.props.handleFinish(true);
+		}
+	}
+
+	handleChangeStep(step) {
+		this.setState({ step });
+	}
+
+	handleBackToFirstStep() {
+		this.setState({ step: 1 });
+		this.props.handleFinish(false);
+	}
+
+	handleGetMainContentTop(val) {
+		this.props.handleGetTop(val);
+		this.setState({ mainContentTop: val });
+	}
+
+	render() {
 		return (
 			<main
 				className={this.props.className}

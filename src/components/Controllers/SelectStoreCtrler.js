@@ -2,8 +2,34 @@ import React from 'react';
 import BasicSelector from './BasicSelector';
 
 class SelectStoreCtrler extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            store: 'placeholder',
+            unvalid: {
+                store: false,
+            },
+        };
+
+        this.handleChange = this.handleChange.bind(this);
+    }
+
+    handleChange(e) {
+		this.setState((state) => ({
+			store: e.target.value,
+			unvalid: {
+				...state.unvalid,
+				store: false,
+			},
+        }));
+        this.props.getData({
+            store: e.target.value,
+            unvalid: { store: false },
+        });
+    }
+    
     render() {
-        let containerClassName = 'confirm-check-ctrler';
+        let containerClassName = 'select-store-ctrler';
 		if (this.props.className) {
 			containerClassName += ` ${this.props.className}`;
         }
@@ -22,11 +48,11 @@ class SelectStoreCtrler extends React.Component {
             <BasicSelector
 				className={containerClassName}
 				title="付款超商"
-				value={this.props.value}
-				unvalid={this.props.unvalid}
+				value={this.state.store}
+				unvalid={this.state.unvalid.store || this.props.unvalid}
 				errorMsg="請選擇付款超商"
 				options={stores}
-				handleChange={this.props.handleChange}
+				handleChange={this.handleChange}
 			/>
         );
     }

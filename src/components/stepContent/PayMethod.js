@@ -17,7 +17,7 @@ class PayMethod extends React.Component {
 				<div
 					key={method.value}
 					className={className}
-					onClick={() => this.props.handlePayMethodClick(method.value)}
+					onClick={() => this.props.handlePayMethodClick({ payMethod: method.value })}
 				>
 					<img
 						className={imgClassName}

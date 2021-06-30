@@ -16,16 +16,12 @@ class App extends React.Component {
 
 	handleFinish(status) {
 		if (this.state.finish !== status) {
-			this.setState({
-				finish: status,
-			});
+			this.setState({ finish: status });
 		}
 	}
 
 	handleGetMainContentTop(val) {
-		this.setState({
-			mainContentTop: val,
-		});
+		this.setState({ mainContentTop: val });
 	}
 
 	render() {

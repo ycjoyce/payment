@@ -12,7 +12,6 @@ import { validCheckBeforeSubmit, setStateWithData } from '../assets/js/util';
 class MainContentBox extends React.Component {
 	constructor(props) {
 		super(props);
-		this.mainContent = React.createRef();
 		this.state = {
 			payMethod: '',
 			submitMethod: null,
@@ -23,6 +22,9 @@ class MainContentBox extends React.Component {
 				confirmCheck: false,
 			},
 		};
+
+		this.mainContent = React.createRef();
+
 		this.payMethods = [
 			{
 				title: '信用卡/金融卡',
@@ -41,13 +43,10 @@ class MainContentBox extends React.Component {
 			},
 		];
 
-		this.handlePayMethodClick = this.handlePayMethodClick.bind(this);
 		this.handleChangeStep = this.handleChangeStep.bind(this);
-		this.getSubmitMethod = this.getSubmitMethod.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.getSubmittedData = this.getSubmittedData.bind(this);
 		this.handleBackToFirstStep = this.handleBackToFirstStep.bind(this);
-		this.getDataFromConfirmCheck = this.getDataFromConfirmCheck.bind(this);
 	}
 
 	componentDidMount() {
@@ -77,30 +76,36 @@ class MainContentBox extends React.Component {
 			return <PayMethod
 				methods={this.payMethods}
 				checked={this.state.payMethod}
-				handlePayMethodClick={this.handlePayMethodClick}
+				handlePayMethodClick={setStateWithData.bind(this)}
 				handleChangeStep={this.handleChangeStep}
 			/>;
 		}
 		if (this.props.stepMap[curStep].value === 'fill-in-info') {
 			if (this.state.payMethod === 'credit-card') {
 				return <PayByCard
-					handleSubmitMethod={this.getSubmitMethod}
+					getData={setStateWithData}
+					handleSubmitMethod={setStateWithData.bind(this)}
 				/>
 			}
 			if (this.state.payMethod === 'convenience-store') {
 				return <PayByStore
-					handleSubmitMethod={this.getSubmitMethod}
+					getData={setStateWithData}
+					handleSubmitMethod={setStateWithData.bind(this)}
 					submitData={this.getSubmittedData}
 				/>
 			}
 			if (this.state.payMethod === 'web-atm') {
 				return <PayByWebATM
-					handleSubmitMethod={this.getSubmitMethod}
+					getData={setStateWithData}
+					handleSubmitMethod={setStateWithData.bind(this)}
 				/>
 			}
 		}
 		if (this.props.stepMap[curStep].value === 'finish') {
 			if (this.state.payMethod === 'convenience-store') {
+				if (!this.submittedData) {
+					return undefined
+				}
 				return <ShowStoreFinish
 					handleChangeStep={this.handleBackToFirstStep}
 					listItems={[
@@ -127,23 +132,9 @@ class MainContentBox extends React.Component {
 	}
 	
 	handleBackToFirstStep () {
-		this.setState({
-			payMethod: '',
-		});
+		this.setState({ payMethod: '' });
 		this.initConfirmData();
 		this.props.handleBackToFirstStep();
-	}
-
-	handlePayMethodClick(payMethod) {
-		this.setState({
-			payMethod,
-		});
-	}
-
-	getSubmitMethod(val) {
-		this.setState({
-			submitMethod: val,
-		});
 	}
 
 	getSubmittedData(data) {
@@ -184,10 +175,6 @@ class MainContentBox extends React.Component {
 		validCheckBeforeSubmit.call(this, err);
 	}
 
-	getDataFromConfirmCheck(data) {
-		setStateWithData.call(this, data);
-	}
-
 	render() {
 		const { title, subtitle } = this.getTitle(this.props.curStep);
 
@@ -217,7 +204,7 @@ class MainContentBox extends React.Component {
 						<ConfirmCheckCtrler
 							emailUnvalid={this.state.unvalid.email}
 							confirmCheckUnvalid={this.state.unvalid.confirmCheck}
-							getData={this.getDataFromConfirmCheck}
+							getData={setStateWithData.bind(this)}
 							className="mb-4"
 						/>
 

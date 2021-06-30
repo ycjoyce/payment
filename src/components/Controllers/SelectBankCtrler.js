@@ -1,8 +1,33 @@
 import React from 'react';
-import bankList from '../../assets/bankList.json';
 import BasicSelector from './BasicSelector';
 
 class SelectBankCtrler extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			bank: 'placeholder',
+			unvalid: {
+				bank: false,
+			},
+		};
+
+		this.handleChange = this.handleChange.bind(this);
+	}
+
+	handleChange(e) {
+		this.setState((state) => ({
+			bank: e.target.value,
+			unvalid: {
+				...state.unvalid,
+				bank: false,
+			},
+		}));
+		this.props.getData({
+			bank: e.target.value,
+			unvalid: { bank: false },
+		});
+	}
+
 	render() {
 		let containerClassName = 'bank-selector';
 		if (this.props.className) {
@@ -13,11 +38,11 @@ class SelectBankCtrler extends React.Component {
 			code: 'placeholder',
 			name: '選擇銀行',
 		}];
-		for (let category in bankList) {
-			if (!{}.hasOwnProperty.call(bankList, category)) {
+		for (let category in this.props.bankList) {
+			if (!{}.hasOwnProperty.call(this.props.bankList, category)) {
 				continue;
 			}
-			banks = banks.concat(bankList[category]);
+			banks = banks.concat(this.props.bankList[category]);
 		}
 		banks = banks.map((bank) => (
 			<option
@@ -33,11 +58,11 @@ class SelectBankCtrler extends React.Component {
 			<BasicSelector
 				className={containerClassName}
 				title="付款銀行"
-				value={this.props.value}
-				unvalid={this.props.unvalid}
+				value={this.state.bank}
+				unvalid={this.props.unvalid || this.state.unvalid.bank}
 				errorMsg="請選擇付款銀行"
 				options={banks}
-				handleChange={this.props.handleChange}
+				handleChange={this.handleChange}
 			>
 				<ol className="mt-4 ps-4">
 					<li>

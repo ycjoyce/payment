@@ -3,7 +3,7 @@ import CardNumCtrler from '../controllers/CardNumCtrler';
 import InstallmentCtrler from '../controllers/InstallmentCtrler';
 import ExpirationDateCtrler from '../controllers/ExpirationDateCtrler';
 import SafeCodeCtrler from '../controllers/SafeCodeCtrler';
-import { setStateWithData, validateCardNum } from '../../assets/js/util';
+import { validateCardNum } from '../../assets/js/util';
 
 class PayByCard extends React.Component {
 	constructor(props) {
@@ -40,7 +40,6 @@ class PayByCard extends React.Component {
 		];
 
 		this.handleSubmit = this.handleSubmit.bind(this);
-		this.getDataFromCtrlers = this.getDataFromCtrlers.bind(this);
 	}
 
 	handleSubmit() {
@@ -84,12 +83,8 @@ class PayByCard extends React.Component {
 		return err;
 	}
 
-	getDataFromCtrlers(data) {
-		setStateWithData.call(this, data);
-	}
-
 	componentDidMount() {
-		this.props.handleSubmitMethod(this.handleSubmit);
+		this.props.handleSubmitMethod({ submitMethod: this.handleSubmit });
 	}
 
 	render() {
@@ -109,26 +104,26 @@ class PayByCard extends React.Component {
 				<InstallmentCtrler
 					installments={installment}
 					unvalid={this.state.unvalid.installment}
-					getData={this.getDataFromCtrlers}
+					getData={this.props.getData.bind(this)}
 					className="mb-4"
 				/>
 
 				<CardNumCtrler
 					cardLabels={this.cardLabels}
 					unvalid={this.state.unvalid.cardNum}
-					getData={this.getDataFromCtrlers}
+					getData={this.props.getData.bind(this)}
 					className="mb-4"
 				/>
 
 				<ExpirationDateCtrler
 					unvalid={this.state.unvalid.expiration}
-					getData={this.getDataFromCtrlers}
+					getData={this.props.getData.bind(this)}
 					className="mb-4"
 				/>
 
 				<SafeCodeCtrler
 					unvalid={this.state.unvalid.safeCode}
-					getData={this.getDataFromCtrlers}
+					getData={this.props.getData.bind(this)}
 					className="mb-4"
 				/>
 			</>

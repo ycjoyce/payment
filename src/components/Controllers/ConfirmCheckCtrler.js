@@ -12,12 +12,7 @@ class ConfirmCheckCtrler extends React.Component {
 			},
 		};
 
-		this.setEmail = this.setEmail.bind(this);
 		this.handleConfirmCheck = this.handleConfirmCheck.bind(this);
-	}
-
-	setEmail(data) {
-		this.props.getData(data);
 	}
 
 	handleConfirmCheck(e) {
@@ -41,7 +36,7 @@ class ConfirmCheckCtrler extends React.Component {
 			<div className={containerClassName}>
 				<EmailCtrler
 					unvalid={this.props.emailUnvalid}
-					getEmail={this.setEmail}
+					getEmail={this.props.getData}
 					className="mb-4"
 				/>
 				

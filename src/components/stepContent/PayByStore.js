@@ -10,18 +10,31 @@ class PayByStore extends React.Component {
 				store: false,
 			},
 		};
-		this.handleStoreSelect = this.handleStoreSelect.bind(this);
-		this.handleSubmit = this.handleSubmit.bind(this);
-	}
 
-	handleStoreSelect(e) {
-		this.setState((state) => ({
-			store: e.target.value,
-			unvalid: {
-				...state.unvalid,
-				store: false,
-			},
-		}));
+		this.stores = [
+            {
+                value: 'placeholder',
+                title: '選擇商店',
+            },
+            {
+                value: '7-11',
+                title: '7-11',
+            },
+            {
+                value: 'fami-mart',
+                title: '全家',
+            },
+            {
+                value: 'hi-life',
+                title: '萊爾富',
+            },
+            {
+                value: 'ok-mart',
+                title: 'OK mart',
+            }
+		];
+
+		this.handleSubmit = this.handleSubmit.bind(this);
 	}
 
 	handleSubmit() {
@@ -45,39 +58,15 @@ class PayByStore extends React.Component {
 	}
 
 	componentDidMount() {
-		this.props.handleSubmitMethod(this.handleSubmit);
+		this.props.handleSubmitMethod({ submitMethod: this.handleSubmit });
 	}
 
   	render() {
-		this.stores = [
-            {
-                value: 'placeholder',
-                title: '選擇商店',
-            },
-            {
-                value: '7-11',
-                title: '7-11',
-            },
-            {
-                value: 'fami-mart',
-                title: '全家',
-            },
-            {
-                value: 'hi-life',
-                title: '萊爾富',
-            },
-            {
-                value: 'ok-mart',
-                title: 'OK mart',
-            }
-		];
-		
 		return (
 			<SelectStoreCtrler
 				stores={this.stores}
-				value={this.state.store}
 				unvalid={this.state.unvalid.store}
-				handleChange={this.handleStoreSelect}
+				getData={this.props.getData.bind(this)}
 				className="mb-4"
 			/>
 		);
