@@ -23,7 +23,9 @@ class ConfirmCheckCtrler extends React.Component {
 			},
 		};
 		this.setState(data);
-		this.props.getData(data);
+		if (typeof this.props.getData === 'function') {
+			this.props.getData(data);
+		}
 	}
 
 	render() {

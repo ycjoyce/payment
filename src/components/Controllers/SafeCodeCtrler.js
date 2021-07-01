@@ -22,9 +22,11 @@ class SafeCodeCtrler extends React.Component {
 					safeCode: true,
 				}
 			}));
-			this.props.getData({
-				unvalid: { safeCode: true },
-			});
+			if (typeof this.props.getData === 'function') {
+				this.props.getData({
+					unvalid: { safeCode: true },
+				});
+			}
 			return;
 		}
 		this.setState((state)=> ({
@@ -34,10 +36,12 @@ class SafeCodeCtrler extends React.Component {
 			},
 			safeCode: e.target.value,
 		}));
-		this.props.getData({
-			safeCode: e.target.value,
-			unvalid: { safeCode: false },
-		});
+		if (typeof this.props.getData === 'function') {
+			this.props.getData({
+				safeCode: e.target.value,
+				unvalid: { safeCode: false },
+			});
+		}
 	}
 
 	render() {

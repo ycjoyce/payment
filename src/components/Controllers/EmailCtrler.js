@@ -22,7 +22,9 @@ class EmailCtrler extends React.Component {
 			},
 		};
 		this.setState(data);
-		this.props.getEmail(data);
+		if (typeof this.props.getEmail === 'function') {
+			this.props.getEmail(data);
+		}
 	}
 
 	render() {

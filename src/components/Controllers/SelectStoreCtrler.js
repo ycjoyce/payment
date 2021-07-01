@@ -22,10 +22,12 @@ class SelectStoreCtrler extends React.Component {
 				store: false,
 			},
         }));
-        this.props.getData({
-            store: e.target.value,
-            unvalid: { store: false },
-        });
+        if (typeof this.props.getData === 'function') {
+            this.props.getData({
+                store: e.target.value,
+                unvalid: { store: false },
+            });
+        }
     }
     
     render() {

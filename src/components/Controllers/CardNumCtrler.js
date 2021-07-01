@@ -1,6 +1,7 @@
 import React from 'react';
 import BasicCtrler from './BasicCtrler';
 import ShowCardLabel from './ShowCardLabel';
+import InputChain from './InputChain';
 import { validateCardNum } from '../../assets/js/util';
 
 class CardNumCtrler extends React.Component {
@@ -13,23 +14,15 @@ class CardNumCtrler extends React.Component {
 				cardNum: false,
 			},
 		};
-
-		this.inputRefs = [];
-		for (let i = 0; i < 4; i++) {
-			this.inputRefs.push(React.createRef());
-		}
-
-		this.handleNumInput = this.handleNumInput.bind(this);
+		
 		this.handleNumInputFocus = this.handleNumInputFocus.bind(this);
+		this.handleNumInput = this.handleNumInput.bind(this);
 	}
 
-	componentDidUpdate(prevProps, prevState) {
-		if (this.state.inputFocused !== prevState.inputFocused) {
-			if (prevState.inputFocused === null || this.state.inputFocused === null) {
-				return;
-			}
-			this.inputRefs[+this.state.inputFocused].current.focus();
-		}
+	handleNumInputFocus(e) {
+		this.setState({
+			inputFocused: +e.target.dataset.col,
+		});
 	}
 
 	handleNumInput(e) {
@@ -73,15 +66,8 @@ class CardNumCtrler extends React.Component {
 		);
 	}
 
-	handleNumInputFocus(e) {
-		this.setState({
-			inputFocused: +e.target.dataset.col,
-		});
-	}
-
   	render() {
-		const inputChain = [];
-		const chainClassName = 'd-flex align-items-center';
+		const chainClassName = 'd-flex align-items-center col-lg-6';
 		let containerClassName = 'card-num-ctrler';
 		let inputClassName = 'form-control';
 
@@ -93,34 +79,6 @@ class CardNumCtrler extends React.Component {
 			inputClassName += ' border-danger';
 		}
 
-		for (let i = 0; i < 4; i++) {
-			if (i !== 3) {
-				inputClassName += ' me-2 me-sm-0 px-1 px-sm-2';
-			}
-			inputChain.push(
-				<input
-					type="text"
-					maxLength="4"
-					key={i}
-					className={inputClassName}
-					data-col={i}
-					onInput={this.handleNumInput}
-					onFocus={this.handleNumInputFocus}
-					ref={this.inputRefs[i]}
-				/>
-			);
-			if (i !== 3) {
-				inputChain.push(
-					<span
-						className="mx-1 d-none d-sm-block"
-						key={`${i}-span`}
-					>
-						—
-					</span>
-				);
-			}
-		}
-
 		return (
 			<div className={containerClassName}>
 				<BasicCtrler
@@ -130,11 +88,19 @@ class CardNumCtrler extends React.Component {
 				>
 					<div className="d-flex flex-wrap flex-lg-nowrap align-items-end">
 						<div className={chainClassName}>
-							{inputChain}
+							<InputChain
+								length={4}
+								inputMaxLen="4"
+								inputClassName={inputClassName}
+								inputFocused={this.state.inputFocused}
+								handleInput={this.handleNumInput}
+								handleInputFocus={this.handleNumInputFocus}
+							/>
 						</div>
 						<ShowCardLabel
 							labels={this.props.cardLabels}
 							cardNum={this.state.cardNum.join('')}
+							unvalid={this.state.unvalid.cardNum}
 							className="ms-lg-3 mt-lg-0 mt-2"
 						/>
 					</div>

@@ -75,9 +75,12 @@ class ExpirationDateCtrler extends React.Component {
 			}),
 			() => {
 				const { year, month } = this.state.expiration;
-				this.props.getData({
-					expiration: { year, month },
-				});
+				if (typeof this.props.getData === 'function') {
+					this.props.getData({
+						expiration: { year, month },
+					});
+				}
+				
 				if (!Number.isNaN(+year) && !Number.isNaN(+month)) {
 					this.setState((state)=> ({
 						unvalid: {
@@ -85,9 +88,11 @@ class ExpirationDateCtrler extends React.Component {
 							expiration: false,
 						}
 					}));
-					this.props.getData({
-						unvalid: { expiration: false },
-					});
+					if (typeof this.props.getData === 'function') {
+						this.props.getData({
+							unvalid: { expiration: false },
+						});
+					}
 				}
 			}
 		);

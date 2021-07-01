@@ -5,7 +5,10 @@ class ShowCardLabel extends React.Component {
 		const firstTwoChar = cardNum.substr(0, 2);
 		const firstThreeChar = cardNum.substr(0, 3);
 		const firstFourChar = cardNum.substr(0, 4);
-
+		
+		if (cardNum.length !== 16 || this.props.unvalid) {
+			return false;
+		} 
 		if (cardNum.startsWith('4')) {
 			return 'visa';
 		}

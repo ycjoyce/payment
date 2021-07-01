@@ -13,12 +13,14 @@ class InstallmentCtrler extends React.Component {
 
 	handleInstallmentChange(e) {
 		this.setState({ installment: e.target.value });
-		this.props.getData({
-			installment: e.target.value,
-			unvalid: {
-				installment: false,
-			},
-		});
+		if (typeof this.props.getData === 'function') {
+			this.props.getData({
+				installment: e.target.value,
+				unvalid: {
+					installment: false,
+				},
+			});
+		}
 	}
 
 	render() {

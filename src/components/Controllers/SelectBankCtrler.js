@@ -22,10 +22,12 @@ class SelectBankCtrler extends React.Component {
 				bank: false,
 			},
 		}));
-		this.props.getData({
-			bank: e.target.value,
-			unvalid: { bank: false },
-		});
+		if (typeof this.props.getData === 'function') {
+			this.props.getData({
+				bank: e.target.value,
+				unvalid: { bank: false },
+			});
+		}
 	}
 
 	render() {
