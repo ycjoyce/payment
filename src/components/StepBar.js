@@ -1,8 +1,9 @@
 import React from 'react';
 
 class StepBar extends React.Component {
-	render() {
+	makeSteps() {
 		const steps = [];
+
 		for (let i = 0; i < this.props.steps; i++) {
 			let className = 'step-bar-item badge rounded-circle p-0';
 			if (i + 1 <= this.props.curStep) {
@@ -22,14 +23,16 @@ class StepBar extends React.Component {
 			);
 		}
 
-		let olClassName = 'step-bar d-flex flex-wrap ps-0';
-		if (this.props.className) {
-			olClassName += ` ${this.props.className}`;
-		}
+		return steps;
+	}
+
+	render() {
+		const { className } = this.props;
+		const containerClassName = `step-bar d-flex flex-wrap ps-0 ${className || ''}`;
 
 		return (
-			<ol className={olClassName}>
-				{steps}
+			<ol className={containerClassName}>
+				{this.makeSteps()}
 			</ol>
 		);
 	}

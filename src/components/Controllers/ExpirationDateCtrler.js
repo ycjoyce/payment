@@ -4,21 +4,10 @@ import BasicCtrler from './BasicCtrler';
 class ExpirationDateCtrler extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			expiration: {
-				year: 'placeholder',
-				month: 'placeholder',
-			},
-			unvalid: {
-				expiration: false,
-			},
-		};
 
 		const { yearOptions, monthOptions } = this.getOptions(new Date().getFullYear());
 		this.yearOptions = yearOptions;
 		this.monthOptions = monthOptions;
-
-		this.handleChange = this.handleChange.bind(this);
 	}
 
 	getOptions(curYear) {
@@ -40,13 +29,13 @@ class ExpirationDateCtrler extends React.Component {
 					value: i,
 				});
 			}
-			options = options.map((option) => (
+			options = options.map(({ value, title }) => (
 				<option
-					disabled={option.value === placeholder[type].value}
-					key={option.value}
-					value={option.value}
+					disabled={value === placeholder[type].value}
+					key={value}
+					value={value}
 				>
-					{option.title}
+					{title}
 				</option>
 			));
 			return options;
@@ -63,64 +52,33 @@ class ExpirationDateCtrler extends React.Component {
 		return { yearOptions, monthOptions };
 	}
 
-	handleChange(e) {
+	handleChange = (e) => {
 		const type = e.target.dataset.type;
 		const val = e.target.value;
-		this.setState(
-			(state) => ({
-				expiration: {
-					...state.expiration,
-					[type]: val,
-				},
-			}),
-			() => {
-				const { year, month } = this.state.expiration;
-				if (typeof this.props.getData === 'function') {
-					this.props.getData({
-						expiration: { year, month },
-					});
-				}
-				
-				if (!Number.isNaN(+year) && !Number.isNaN(+month)) {
-					this.setState((state)=> ({
-						unvalid: {
-							...state.unvalid,
-							expiration: false,
-						}
-					}));
-					if (typeof this.props.getData === 'function') {
-						this.props.getData({
-							unvalid: { expiration: false },
-						});
-					}
-				}
-			}
-		);
+		this.props.getData({ expiration: { [type]: val } });
 	}
 
 	render() {
-		let containerClassName = 'expiration-date-ctrler';
-		if (this.props.className) {
-			containerClassName += ` ${this.props.className}`;
-		}
-
-		let selectorClassName = 'form-select';
-		if (this.props.unvalid || this.state.unvalid.expiration) {
-			selectorClassName += ' border-danger';
-		}
+		const {
+			className,
+			unvalid,
+			expiration: { year, month },
+		} = this.props;
+		const containerClassName = `expiration-date-ctrler ${className || ''}`;
+		const selectorClassName = `form-select ${(unvalid) && 'border-danger'}`;
 
 		return (
 			<div className={containerClassName}>
 				<BasicCtrler
 					title="有效月年"
-					unvalid={this.props.unvalid || this.state.unvalid.expiration}
+					unvalid={unvalid}
 					errorMsg="請選擇有效月年"
 				>
 					<div className="col-md-6 d-inline-flex align-items-center">
 						<select
 							className={selectorClassName}
 							onChange={this.handleChange}
-							value={this.state.expiration.year}
+							value={year}
 							data-type="year"
 						>
 							{this.yearOptions}
@@ -131,7 +89,7 @@ class ExpirationDateCtrler extends React.Component {
 						<select
 							className={selectorClassName}
 							onChange={this.handleChange}
-							value={this.state.expiration.month}
+							value={month}
 							data-type="month"
 						>
 							{this.monthOptions}

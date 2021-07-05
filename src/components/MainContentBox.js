@@ -7,7 +7,7 @@ import ShowFinish from './stepContent/ShowFinish';
 import ShowStoreFinish from './stepContent/ShowStoreFinish';
 import ConfirmCheckCtrler from './controllers/ConfirmCheckCtrler';
 import BtnsToChangeStep from './BtnsToChangeStep';
-import { validCheckBeforeSubmit, setStateWithData } from '../assets/js/util';
+import { validCheckBeforeSubmit, setStateWithData, validateEmail } from '../assets/js/util';
 
 class MainContentBox extends React.Component {
 	constructor(props) {
@@ -49,64 +49,64 @@ class MainContentBox extends React.Component {
 		this.handleBackToFirstStep = this.handleBackToFirstStep.bind(this);
 	}
 
-	componentDidMount() {
-		this.props.handleGetTop(this.mainContent.current.offsetTop);
-	}
-
 	getTitle(curStep) {
+		const { stepMap } = this.props;
+		const { payMethod } = this.state;
 		let title = '';
 		let subtitle = '';
 
-		if (this.props.stepMap[curStep].value !== 'finish') {
-			title = `STEP${curStep}. ${this.props.stepMap[curStep].title}`;
+		if (stepMap[curStep].value !== 'finish') {
+			title = `STEP${curStep}. ${stepMap[curStep].title}`;
 		} else {
-			const type = this.state.payMethod === 'convenience-store' ? 'store' : 'default-show';
-			title = this.props.stepMap[curStep].title[type];
+			const type = payMethod === 'convenience-store' ? 'store' : 'default-show';
+			title = stepMap[curStep].title[type];
 		}
 		
-		if (this.props.stepMap[curStep].value === 'fill-in-info') {
-			subtitle = this.payMethods.find((method) => method.value === this.state.payMethod).title;
+		if (stepMap[curStep].value === 'fill-in-info') {
+			subtitle = this.payMethods.find((method) => method.value === payMethod).title;
 		}
 
 		return { title, subtitle };
 	}
 
 	getContent(curStep) {
-		if (this.props.stepMap[curStep].value === 'choose-pay-method') {
+		const { stepMap } = this.props;
+		const { payMethod } = this.state;
+
+		if (stepMap[curStep].value === 'choose-pay-method') {
 			return <PayMethod
 				methods={this.payMethods}
-				checked={this.state.payMethod}
+				checked={payMethod}
 				handlePayMethodClick={setStateWithData.bind(this)}
 				handleChangeStep={this.handleChangeStep}
 			/>;
 		}
-		if (this.props.stepMap[curStep].value === 'fill-in-info') {
-			if (this.state.payMethod === 'credit-card') {
+		if (stepMap[curStep].value === 'fill-in-info') {
+			if (payMethod === 'credit-card') {
 				return <PayByCard
 					getData={setStateWithData}
 					handleSubmitMethod={setStateWithData.bind(this)}
 				/>
 			}
-			if (this.state.payMethod === 'convenience-store') {
+			if (payMethod === 'convenience-store') {
 				return <PayByStore
-					getData={setStateWithData}
 					handleSubmitMethod={setStateWithData.bind(this)}
 					submitData={this.getSubmittedData}
 				/>
 			}
-			if (this.state.payMethod === 'web-atm') {
+			if (payMethod === 'web-atm') {
 				return <PayByWebATM
-					getData={setStateWithData}
 					handleSubmitMethod={setStateWithData.bind(this)}
 				/>
 			}
 		}
-		if (this.props.stepMap[curStep].value === 'finish') {
-			if (this.state.payMethod === 'convenience-store') {
+		if (stepMap[curStep].value === 'finish') {
+			if (payMethod === 'convenience-store') {
 				if (!this.submittedData) {
 					return undefined
 				}
 				const time = this.submittedData.time;
+				const sevenDays = 1000 * 60 * 60 * 24 * 7;
 				return <ShowStoreFinish
 					handleChangeStep={this.handleBackToFirstStep}
 					listItems={[
@@ -120,7 +120,7 @@ class MainContentBox extends React.Component {
 						},
 						{
 							title: '付款期限',
-							content: `${new Date(time + 1000 * 60 * 60 * 24 * 7).toLocaleDateString()} ${new Date(time).toLocaleTimeString()}`,
+							content: `${new Date(time + sevenDays).toLocaleDateString()} ${new Date(time).toLocaleTimeString()}`,
 						},
 					]}
 				/>
@@ -130,16 +130,6 @@ class MainContentBox extends React.Component {
 			/>
 		}
 		return undefined;
-	}
-	
-	handleBackToFirstStep () {
-		this.setState({ payMethod: '' });
-		this.initConfirmData();
-		this.props.handleBackToFirstStep();
-	}
-
-	getSubmittedData(data) {
-		this.submittedData = data;
 	}
 
 	initConfirmData() {
@@ -152,18 +142,26 @@ class MainContentBox extends React.Component {
 			},
 		});
 	}
+	
+	handleBackToFirstStep () {
+		this.setState({ payMethod: '' });
+		this.initConfirmData();
+		this.props.handleChangeStep('first');
+	}
 
 	handleChangeStep(direction) {
+		const { curStep, stepMap } = this.props;
 		if (!['next', 'prev'].includes(direction)) {
 			return;
 		}
+
 		this.initConfirmData();
-		if (direction === 'next' && this.props.curStep < Object.keys(this.props.stepMap).length) {
-			this.props.handleChangeStep(this.props.curStep + 1);
+		if (direction === 'next' && curStep < Object.keys(stepMap).length) {
+			this.props.handleChangeStep(curStep + 1);
 			return;
 		}
-		if (direction === 'prev' && this.props.curStep > 1) {
-			this.props.handleChangeStep(this.props.curStep - 1);
+		if (direction === 'prev' && curStep > 1) {
+			this.props.handleChangeStep(curStep - 1);
 			return;
 		}
 	}
@@ -175,9 +173,40 @@ class MainContentBox extends React.Component {
 		const err = this.state.submitMethod();
 		validCheckBeforeSubmit.call(this, err);
 	}
+	
+	getSubmittedData(data) {
+		this.submittedData = data;
+	}
+
+	componentDidMount() {
+		this.props.handleGetTop(this.mainContent.current.offsetTop);
+	}
+
+	componentDidUpdate(prevProps, prevState) {
+		if (prevState.email !== this.state.email) {
+			this.setState((state) => ({
+				unvalid: {
+					...state.unvalid,
+					email: !validateEmail(state.email),
+				},
+			}));
+			return;
+		}
+		if (prevState.confirmCheck !== this.state.confirmCheck) {
+			this.setState((state) => ({
+				unvalid: {
+					...state.unvalid,
+					confirmCheck: !state.confirmCheck,
+				},
+			}));
+			return;
+		}
+	}
 
 	render() {
-		const { title, subtitle } = this.getTitle(this.props.curStep);
+		const { curStep, stepMap } = this.props;
+		const { unvalid } = this.state;
+		const { title, subtitle } = this.getTitle(curStep);
 
 		return (
 			<div
@@ -197,14 +226,13 @@ class MainContentBox extends React.Component {
 					}
 				</div>
 				
-				{this.getContent(this.props.curStep)}
+				{this.getContent(curStep)}
 				
 				{
-					this.props.stepMap[this.props.curStep].value === 'fill-in-info' &&
+					stepMap[curStep].value === 'fill-in-info' &&
 					<>
 						<ConfirmCheckCtrler
-							emailUnvalid={this.state.unvalid.email}
-							confirmCheckUnvalid={this.state.unvalid.confirmCheck}
+							unvalid={unvalid}
 							getData={setStateWithData.bind(this)}
 							className="mb-4"
 						/>

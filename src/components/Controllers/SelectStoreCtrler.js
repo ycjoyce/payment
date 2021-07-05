@@ -2,41 +2,14 @@ import React from 'react';
 import BasicSelector from './BasicSelector';
 
 class SelectStoreCtrler extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            store: 'placeholder',
-            unvalid: {
-                store: false,
-            },
-        };
-
-        this.handleChange = this.handleChange.bind(this);
-    }
-
-    handleChange(e) {
-		this.setState((state) => ({
-			store: e.target.value,
-			unvalid: {
-				...state.unvalid,
-				store: false,
-			},
-        }));
-        if (typeof this.props.getData === 'function') {
-            this.props.getData({
-                store: e.target.value,
-                unvalid: { store: false },
-            });
-        }
+    handleChange = (e) => {
+        this.props.getData(e.target.value);
     }
     
     render() {
-        let containerClassName = 'select-store-ctrler';
-		if (this.props.className) {
-			containerClassName += ` ${this.props.className}`;
-        }
-        
-        const stores = this.props.stores.map((store) => (
+        const { stores, className, value, unvalid } = this.props;
+        const containerClassName = `select-store-ctrler ${className || ''}`;
+        const options = stores.map((store) => (
             <option
                 key={store.value}
                 value={store.value}
@@ -50,10 +23,10 @@ class SelectStoreCtrler extends React.Component {
             <BasicSelector
 				className={containerClassName}
 				title="付款超商"
-				value={this.state.store}
-				unvalid={this.state.unvalid.store || this.props.unvalid}
+				value={value}
+				unvalid={unvalid}
 				errorMsg="請選擇付款超商"
-				options={stores}
+				options={options}
 				handleChange={this.handleChange}
 			/>
         );

@@ -27,7 +27,7 @@ class InputChain extends React.Component {
 					type="text"
 					maxLength={this.props.inputMaxLen}
 					key={i}
-					className={`${this.props.inputClassName}${i !== this.props.length - 1 ? ' me-2 me-sm-0 px-1 px-sm-2' : ''}`}
+					className={`${this.props.inputClassName} ${i !== this.props.length - 1 && ' me-2 me-sm-0 px-1 px-sm-2'}`}
 					data-col={i}
 					onInput={this.props.handleInput}
 					onFocus={this.props.handleInputFocus}

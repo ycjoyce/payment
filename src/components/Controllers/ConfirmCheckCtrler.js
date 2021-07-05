@@ -3,53 +3,38 @@ import EmailCtrler from './EmailCtrler';
 import BasicCtrler from './BasicCtrler';
 
 class ConfirmCheckCtrler extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			confirmCheck: false,
-			unvalid: {
-				confirmCheckUnvalid: false,
-			},
-		};
-
-		this.handleConfirmCheck = this.handleConfirmCheck.bind(this);
+	handleEmailChange = (email) => {
+		this.props.getData(email);
 	}
 
-	handleConfirmCheck(e) {
-		const data = {
-			confirmCheck: e.target.checked,
-			unvalid: {
-				confirmCheck: !e.target.checked,
-			},
-		};
-		this.setState(data);
-		if (typeof this.props.getData === 'function') {
-			this.props.getData(data);
-		}
+	handleConfirmCheck = (e) => {
+		this.props.getData({ confirmCheck: e.target.checked });
 	}
 
 	render() {
-		let containerClassName = 'confirm-check-ctrler';
-		if (this.props.className) {
-			containerClassName += ` ${this.props.className}`;
-		}
+		const {
+			className,
+			confirmCheck,
+			unvalid,
+		} = this.props;
+		const containerClassName = `confirm-check-ctrler ${className || ''}`;
 
 		return (
 			<div className={containerClassName}>
 				<EmailCtrler
-					unvalid={this.props.emailUnvalid}
-					getEmail={this.props.getData}
+					unvalid={unvalid.email}
+					getData={this.handleEmailChange}
 					className="mb-4"
 				/>
 				
 				<BasicCtrler
-					unvalid={this.props.confirmCheckUnvalid}
+					unvalid={unvalid.confirmCheck}
 					errorMsg="請勾選"
 				>
 					<label className="confirm-check d-inline-flex">
 						<input
 							type="checkbox"
-							checked={this.props.confirmCheck}
+							checked={confirmCheck}
 							onChange={this.handleConfirmCheck}
 							className="form-check-input confirm-check-ctrler me-2 flex-shrink-0"
 						/>

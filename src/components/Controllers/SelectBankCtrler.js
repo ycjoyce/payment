@@ -2,51 +2,24 @@ import React from 'react';
 import BasicSelector from './BasicSelector';
 
 class SelectBankCtrler extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			bank: 'placeholder',
-			unvalid: {
-				bank: false,
-			},
-		};
-
-		this.handleChange = this.handleChange.bind(this);
+	handleChange = (e) => {
+		this.props.getData(e.target.value);
 	}
 
-	handleChange(e) {
-		this.setState((state) => ({
-			bank: e.target.value,
-			unvalid: {
-				...state.unvalid,
-				bank: false,
-			},
-		}));
-		if (typeof this.props.getData === 'function') {
-			this.props.getData({
-				bank: e.target.value,
-				unvalid: { bank: false },
-			});
-		}
-	}
-
-	render() {
-		let containerClassName = 'bank-selector';
-		if (this.props.className) {
-			containerClassName += ` ${this.props.className}`;
-		}
-
-		let banks = [{
+	makeOptions(bankList) {
+		let options = [{
 			code: 'placeholder',
 			name: '選擇銀行',
 		}];
-		for (let category in this.props.bankList) {
-			if (!{}.hasOwnProperty.call(this.props.bankList, category)) {
+
+		for (let category in bankList) {
+			if (!{}.hasOwnProperty.call(bankList, category)) {
 				continue;
 			}
-			banks = banks.concat(this.props.bankList[category]);
+			options = options.concat(bankList[category]);
 		}
-		banks = banks.map((bank) => (
+
+		options = options.map((bank) => (
 			<option
 				value={bank.code}
 				key={bank.code}
@@ -56,14 +29,22 @@ class SelectBankCtrler extends React.Component {
 			</option>
 		));
 
+		return options;
+	}
+
+	render() {
+		const { bankList, className, bank, unvalid } = this.props;
+		const containerClassName = `bank-selector ${className || ''}`;
+		const options = this.makeOptions(bankList);
+
 		return (
 			<BasicSelector
 				className={containerClassName}
 				title="付款銀行"
-				value={this.state.bank}
-				unvalid={this.props.unvalid || this.state.unvalid.bank}
+				value={bank}
+				unvalid={unvalid}
 				errorMsg="請選擇付款銀行"
-				options={banks}
+				options={options}
 				handleChange={this.handleChange}
 			>
 				<ol className="mt-4 ps-4">

@@ -3,10 +3,7 @@ import BasicCtrler from './BasicCtrler';
 
 class BasicSelector extends React.Component {
     render() {
-        let selectClassName = 'form-select';
-        if (this.props.unvalid) {
-            selectClassName += ' border-danger';
-        }
+		const selectClassName = `form-select ${this.props.unvalid && 'border-danger'}`;
 
         return (
             <div className={this.props.className || ''}>

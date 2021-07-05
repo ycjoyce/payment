@@ -21,13 +21,8 @@ class ShowCardLabel extends React.Component {
 		return false;
 	}
 
-	render() {
-		let containerClassName = 'card-label-box d-flex';
-		if (this.props.className) {
-			containerClassName += ` ${this.props.className}`;
-		}
-
-		const labels = this.props.labels.map((label, index, arr) => {
+	makeLabels() {
+		return this.props.labels.map((label, index, arr) => {
 			let className = 'card-label form-control-sketch';
 			if (this.checkCardLabel(this.props.cardNum) === label.title) {
 				className += ' light';
@@ -46,10 +41,15 @@ class ShowCardLabel extends React.Component {
 				/>
 			);
 		});
+	}
+
+	render() {
+		const { className } = this.props;
+		const containerClassName = `card-label-box d-flex ${className || ''}`;
 
 		return (
 			<div className={containerClassName}>
-				{labels}
+				{this.makeLabels()}
 			</div>
 		);
 	}

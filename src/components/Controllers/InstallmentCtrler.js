@@ -2,57 +2,41 @@ import React from 'react';
 import BasicCtrler from './BasicCtrler';
 
 class InstallmentCtrler extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			installment: '',
-		};
-
-		this.handleInstallmentChange = this.handleInstallmentChange.bind(this);
+	handleChange = (e) => {
+		this.props.getData({ installment: e.target.value });
 	}
 
-	handleInstallmentChange(e) {
-		this.setState({ installment: e.target.value });
-		if (typeof this.props.getData === 'function') {
-			this.props.getData({
-				installment: e.target.value,
-				unvalid: {
-					installment: false,
-				},
-			});
-		}
-	}
-
-	render() {
-		let containerClassName = 'installment-ctrler';
-		if (this.props.className) {
-			containerClassName += ` ${this.props.className}`;
-		}
-
-		const installmentInputs = this.props.installments.map((item, index, arr) => (
+	makeRadios(installments) {
+		return installments.map(({ title, value }, index, arr) => (
 			<label
 				className={index === arr.length - 1 ? '' : 'me-3'}
-				key={item.value}
+				key={value}
 			>
 				<input
 					type="radio"
 					name="installment"
-					value={item.value}
-					checked={item.value === this.state.installment}
-					onChange={this.handleInstallmentChange}
+					value={value}
+					checked={value === this.props.installment}
+					onChange={this.handleChange}
 					className="me-2 form-check-input"
 				/>
-				{item.title}
+				{title}
 			</label>
 		));
+	}
+
+	render() {
+		const { className, installments, unvalid } = this.props;
+		const containerClassName = `installment-ctrler ${className || ''}`;
+		const radios = this.makeRadios(installments);
 
 		return (
 			<div className={containerClassName}>
 				<BasicCtrler
-					unvalid={this.props.unvalid}
+					unvalid={unvalid}
 					errorMsg="請選擇一次或分期付款"
 				>
-					{installmentInputs}
+					{radios}
 				</BasicCtrler>
 			</div>
 		);

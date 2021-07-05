@@ -3,27 +3,24 @@ import bankList from '../../assets/bankList.json';
 import SelectBankCtrler from '../controllers/SelectBankCtrler';
 
 class PayByWebATM extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			bank: 'placeholder',
-			unvalid: {
-				bank: false,
-			},
-		};
+	state = {
+		bank: 'placeholder',
+		unvalid: { bank: false },
+	};
 
-		this.handleSubmit = this.handleSubmit.bind(this);
+	handleBankSelect = (bank) => {
+		this.setState({
+			bank,
+			unvalid: { bank: bank === 'placeholder' },
+		});
 	}
 
-	handleSubmit() {
+	handleSubmit = (e) => {
 		const err = [];
 		if (this.state.bank === 'placeholder') {
-			this.setState((state) => ({
-				unvalid: {
-					...state.unvalid,
-					bank: true,
-				},
-			}));
+			this.setState({
+				unvalid: { bank: true },
+			});
 			err.push('bank');
 		}
 		return err;
@@ -37,8 +34,9 @@ class PayByWebATM extends React.Component {
 		return (
 			<SelectBankCtrler
 				bankList={bankList}
+				bank={this.state.bank}
 				unvalid={this.state.unvalid.bank}
-				getData={this.props.getData.bind(this)}
+				getData={this.handleBankSelect}
 				className="mb-4"
 			/>
 		);

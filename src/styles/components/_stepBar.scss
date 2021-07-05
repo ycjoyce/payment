@@ -3,6 +3,7 @@
     height: 40px;
     line-height: 40px;
     display: block;
+    transition: background-color .3s;
 
     &:not(:last-child) {
         margin-right: 60px;

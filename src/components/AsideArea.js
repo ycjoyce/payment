@@ -2,13 +2,12 @@ import React from 'react';
 import OrderInfo from './OrderInfo';
 
 class AsideArea extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			hideFinish: false,
-		};
+	state = {
+		hideFinish: false,
+	};
 
-		this.initHideFinish = this.initHideFinish.bind(this);
+	initHideFinish = () => {
+		this.setState({ hideFinish: document.documentElement.offsetWidth < 576 });
 	}
 
 	componentDidMount() {
@@ -18,10 +17,6 @@ class AsideArea extends React.Component {
 
 	componentWillUnmount() {
 		window.removeEventListener('resize', this.initHideFinish);
-	}
-
-	initHideFinish() {
-		this.setState({ hideFinish: document.documentElement.offsetWidth < 576 });
 	}
 
 	render() {
