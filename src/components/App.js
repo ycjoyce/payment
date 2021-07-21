@@ -1,7 +1,9 @@
 import React from 'react';
-import './styles/all.scss';
-import AsideArea from './components/AsideArea';
-import MainArea from './components/MainArea';
+import { Router, Route } from 'react-router-dom';
+import history from '../history';
+import ChoosePayment from './steps/ChoosePayment';
+import '../styles/all.scss';
+
 
 class App extends React.Component {
 	constructor(props) {
@@ -43,19 +45,10 @@ class App extends React.Component {
 
 	render() {
 		return (
-			<div className="outer-container row g-0">
-				<AsideArea
-					finish={this.state.finish}
-					top={this.state.mainContentTop}
-					orderInfoContent={this.orderInfoContent}
-					className="col-sm-3 align-self-start"
-				/>
-				<MainArea
-					handleFinish={this.handleFinish}
-					handleGetTop={this.handleGetMainContentTop}
-					className="col-sm-9 d-flex flex-column"
-				/>
-			</div>
+			<Router history={history}>
+				<Route path="/" exact component={ChoosePayment}/>
+				
+			</Router>
 		);
 	}
 }
