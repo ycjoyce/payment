@@ -1,86 +1,32 @@
-import React from 'react';
-import BasicCtrler from './BasicCtrler';
-import ShowCardLabel from './ShowCardLabel';
-import InputChain from './InputChain';
+import { Component } from 'react';
+import { connect } from 'react-redux';
+import Label from './Label';
+import ErrMsg from './ErrMsg';
+import CardNumInputChain from './CardNumInputChain';
+import ShowCardLabels from './ShowCardLabels';
 
-class CardNumCtrler extends React.Component {
-	state = {
-		cardNum: Array(4).fill(''),
-		inputFocused: null,
-	};
+class CardNumCtrler extends Component {
+  render() {
+    return (
+      <div className={`card-num-ctrler ${this.props.className || ''}`}>
+        <Label>信用卡號</Label>
 
-	handleNumInputFocus = (e) => {
-		this.setState({ inputFocused: +e.target.dataset.col });
-	}
+        <div className="d-flex flex-wrap flex-lg-nowrap align-items-end">
+          <CardNumInputChain />
 
-	handleNumInput = (e) => {
-		const col = +e.target.dataset.col;
-		const value = e.target.value;
-		const setStateNum = (val) => {
-			this.setState((state) => {
-				const cardNum = state.cardNum.slice();
-				cardNum.splice(col, 1, val);
-				return { cardNum };
-			});
-		};
-
-		if (value.length !== 4 || Number.isNaN(+value)) {
-			setStateNum('');
-			return;
-		}
-
-		setStateNum(value);
-
-		this.setState(
-			(state) => (
-				{ inputFocused: col + 1 >= state.cardNum.length ? null : col + 1 }
-			),
-			() => {
-				if (this.state.cardNum.filter((num) => num).length < 4) {
-					return;
-				}
-				const cardNum = this.state.cardNum.join('');
-				this.props.getData({ cardNum });
-			}
-		);
-	}
-
-  	render() {
-		const { inputFocused, cardNum } = this.state;
-		const { className, unvalid, cardLabels } = this.props;
-		const chainClassName = 'd-flex align-items-center col-lg-6';
-		const containerClassName = `card-num-ctrler ${className || ''}`;
-		const inputClassName = `form-control ${unvalid && 'border-danger'}`;
-
-		return (
-			<div className={containerClassName}>
-				<BasicCtrler
-					title="信用卡號"
-					errorMsg="請輸入正確信用卡號"
-					unvalid={unvalid}
-				>
-					<div className="d-flex flex-wrap flex-lg-nowrap align-items-end">
-						<div className={chainClassName}>
-							<InputChain
-								length={4}
-								inputMaxLen="4"
-								inputClassName={inputClassName}
-								inputFocused={inputFocused}
-								handleInput={this.handleNumInput}
-								handleInputFocus={this.handleNumInputFocus}
-							/>
-						</div>
-						<ShowCardLabel
-							labels={cardLabels}
-							cardNum={cardNum.join('')}
-							unvalid={unvalid}
-							className="ms-lg-3 mt-lg-0 mt-2"
-						/>
-					</div>
-				</BasicCtrler>
-			</div>
-		);
-	}
+          <ShowCardLabels
+            cardNum={this.props.cardNum}
+            className="ms-lg-3 mt-lg-0 mt-2"
+          />
+        </div>
+      </div>
+    );
+  }
 }
 
-export default CardNumCtrler;
+function mapStateToProps(state) {
+  const { cardNum1, cardNum2, cardNum3, cardNum4 } = state.form.PayByCreditCard.values;
+  return { cardNum: [cardNum1, cardNum2, cardNum3, cardNum4] };
+}
+
+export default connect(mapStateToProps)(CardNumCtrler);

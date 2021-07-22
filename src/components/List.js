@@ -1,16 +1,16 @@
-import React from 'react';
+import { Component } from 'react';
 
-class List extends React.Component {
-    render() {
-        let containerClassName = 'list ps-0 mb-0';
-        if (this.props.className) {
-            containerClassName += ` ${this.props.className}`;
-        }
-        if (this.props.hide) {
-            containerClassName += ` hide`;
-        }
-        
-        const listItems = this.props.listItems.map((item) => (
+class List extends Component {
+    listClassName() {
+        let className = `list ps-0 mb-0 ${this.props.className || ''}`;
+        // if (this.props.hide) {
+        //     className += ` hide`;
+        // }
+        return className;
+    }
+
+    renderList() {
+        return this.props.items.map((item) => (
             <li
                 className="list-item mb-0"
                 key={item.title}
@@ -26,10 +26,12 @@ class List extends React.Component {
                 </p>
             </li>
         ));
+    }
 
+    render() {
         return (
-            <ul className={containerClassName}>
-                {listItems}
+            <ul className={this.listClassName()}>
+                {this.renderList()}
             </ul>
         );
     }

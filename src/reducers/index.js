@@ -1,5 +1,10 @@
 import { combineReducers } from 'redux';
+import { reducer as formReducer } from 'redux-form';
+import orderReducer from './orderReducer';
+import stepReducer from './stepReducer';
 
 export default combineReducers({
-    replaceMe: () => 10,
+    form: formReducer,
+    order: orderReducer,
+    step: stepReducer,
 });

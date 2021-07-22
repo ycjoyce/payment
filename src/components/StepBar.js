@@ -1,16 +1,18 @@
-import React from 'react';
+import { Component } from 'react';
+import { connect } from 'react-redux';
+import { getSteps } from '../actions';
 
-class StepBar extends React.Component {
-	makeSteps() {
+class StepBar extends Component {
+	componentDidMount() {
+		this.props.getSteps();
+	}
+
+	renderSteps() {
 		const steps = [];
 
 		for (let i = 0; i < this.props.steps; i++) {
-			let className = 'step-bar-item badge rounded-circle p-0';
-			if (i + 1 <= this.props.curStep) {
-				className += ' bg-secondary';
-			} else {
-				className += ' bg-info';
-			}
+			const bgc = i + 1 <= this.props.curStep ? 'bg-secondary' : 'bg-info';
+			const className = `step-bar-item badge rounded-circle p-0 ${bgc}`;
 
 			steps.push(
 				<li
@@ -27,15 +29,21 @@ class StepBar extends React.Component {
 	}
 
 	render() {
-		const { className } = this.props;
-		const containerClassName = `step-bar d-flex flex-wrap ps-0 ${className || ''}`;
-
 		return (
-			<ol className={containerClassName}>
-				{this.makeSteps()}
-			</ol>
+			<ol
+				className={`step-bar d-flex flex-wrap ps-0 ${this.props.className || ''}`}
+			>
+ 				{this.renderSteps()}
+ 			</ol>
 		);
 	}
 }
 
-export default StepBar;
+function mapStateToProps(state) {
+	return { steps: Object.keys(state.step).length };
+}
+
+export default connect(
+	mapStateToProps,
+	{ getSteps }
+)(StepBar);

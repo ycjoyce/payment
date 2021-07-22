@@ -1,46 +1,39 @@
-import React from 'react';
-import BasicCtrler from './BasicCtrler';
+import { Component } from 'react';
+import { Field } from 'redux-form';
 
-class InstallmentCtrler extends React.Component {
-	handleChange = (e) => {
-		this.props.getData({ installment: e.target.value });
-	}
-
-	makeRadios(installments) {
-		return installments.map(({ title, value }, index, arr) => (
-			<label
-				className={index === arr.length - 1 ? '' : 'me-3'}
-				key={value}
-			>
-				<input
-					type="radio"
-					name="installment"
-					value={value}
-					checked={value === this.props.installment}
-					onChange={this.handleChange}
-					className="me-2 form-check-input"
-				/>
-				{title}
-			</label>
-		));
-	}
-
-	render() {
-		const { className, installments, unvalid } = this.props;
-		const containerClassName = `installment-ctrler ${className || ''}`;
-		const radios = this.makeRadios(installments);
-
-		return (
-			<div className={containerClassName}>
-				<BasicCtrler
-					unvalid={unvalid}
-					errorMsg="請選擇一次或分期付款"
-				>
-					{radios}
-				</BasicCtrler>
-			</div>
-		);
-	}
+class InstallmentCtrler extends Component {
+  renderInstallmentCtrler = ({ input, installment, className }) => {
+    return (
+      <label className={className || ''}>
+        <input
+          {...input}
+          type="radio"
+          value={installment.value}
+          checked={installment.value === input.value}
+          className="me-2 form-check-input"
+        />
+        {installment.title}
+      </label>
+    );
+  }
+  
+  render() {
+    return (
+      <div className={`installment-ctrler ${this.props.className || ''}`}>
+        <Field
+          name="installment"
+          component={this.renderInstallmentCtrler}
+          installment={{ title: '一次付款', value: 'pay-once' }}
+          className="me-3"
+        />
+        <Field
+          name="installment"
+          component={this.renderInstallmentCtrler}
+          installment={{ title: '分期付款', value: 'installment-plan' }}
+        />
+      </div>
+    );
+  }
 }
 
 export default InstallmentCtrler;

@@ -1,12 +1,23 @@
 import { Component } from 'react';
-// import StepBar from './StepBar';
+import { connect } from 'react-redux';
+import StepBar from './StepBar';
 // import MainContentBox from './MainContentBox';
 
 class MainArea extends Component {
 	render() {
 		return (
 			<main className={`main-area ${this.props.className || ''}`}>
-				Main
+				<StepBar
+					// steps="3"
+					// curStep={this.props.step}
+					className="justify-content-center my-4"
+				/>
+				
+				<div
+					className="main-content shadow p-4 overflow-scroll flex-grow-1 bg-white"
+				>
+					{this.props.children}
+				</div>
 			</main>
 		);
 	}
@@ -81,4 +92,8 @@ class MainArea extends Component {
 // 	}
 // }
 
-export default MainArea;
+function mapStateToProps(state) {
+	return { step: state.step };
+}
+
+export default connect(mapStateToProps)(MainArea);
