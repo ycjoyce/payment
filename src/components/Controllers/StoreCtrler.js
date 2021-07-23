@@ -29,7 +29,7 @@ class StoreCtrler extends Component {
 
   renderOptions() {
     return this.stores.map((store) => (
-      <option key={store.value} value={store.value}>
+      <option key={store.value} value={store.value} disabled={store.value === 'placeholder'}>
         {store.title}
       </option>
     ));

@@ -11,7 +11,7 @@ class BankCtrler extends Component {
     banks = banks.concat(Object.values(bankList).flat());
 
     return banks.map((bank) => (
-      <option key={bank.code} value={bank.code}>
+      <option key={bank.code} value={bank.code} disabled={bank.code === 'placeholder'}>
         {bank.name}
       </option>
     ));
