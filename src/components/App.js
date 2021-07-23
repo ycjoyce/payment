@@ -41,7 +41,10 @@ class App extends React.Component {
 					render={(props) => (
 						<PayByCreditCard
 							{...props}
-							initialValues={{ installment: 'pay-once' }}
+							initialValues={{
+								installment: 'pay-once',
+								cardNum: { 1: '', 2: '', 3: '', 4: '' },
+							}}
 						/>
 					)}
 				/>

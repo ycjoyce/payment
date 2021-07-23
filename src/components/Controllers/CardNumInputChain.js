@@ -1,5 +1,6 @@
 import { Component, Fragment, createRef } from 'react';
 import { Field } from 'redux-form';
+import ErrMsg from './ErrMsg';
 
 class CardNumInputChain extends Component {
   constructor(props) {
@@ -9,22 +10,27 @@ class CardNumInputChain extends Component {
     for (let i = 0; i < 4; i++) {
       this.inputRefs.push(createRef());
     }
+
+    this.state = {
+      cardNum: { 1: '', 2: '', 3: '', 4: '' },
+    };
   }
 
-  cardNum = { 1: '', 2: '', 3: '', 4: '' };
-
-  renderInput = ({ idx, input, last }) => {
-    const onChange = () => {
-      input.onChange(this.cardNum);
-    };
-
+  renderInput = ({ idx, input, last = false }) => {
     const onInputChange = (e) => {
       const idx = +e.target.dataset.idx;
       if (e.target.value.length > 3) {
         this.inputRefs[idx + 1 > 3 ? idx : idx + 1].current.focus();
       }
-      this.cardNum[idx + 1] = e.target.value;
-      onChange();
+      this.setState(
+        (state) => {
+          return {
+            cardNum: { ...state.cardNum, [idx + 1]: e.target.value },
+          };
+        },
+        () => input.onChange(this.state.cardNum)
+      );
+      input.onChange(this.state.cardNum);
     };
 
     return (
@@ -38,7 +44,7 @@ class CardNumInputChain extends Component {
     );
   }
 
-  renderInputChain = ({ input }) => {
+  renderInputChain = ({ input, meta }) => {
     const chain = [];
 
     for (let i = 0; i < 4; i++) {
@@ -55,6 +61,16 @@ class CardNumInputChain extends Component {
         <Fragment key={i}>
           {this.renderInput({ idx: i, input, last: true })}
         </Fragment>
+      );
+    }
+
+    if (meta.error && meta.touched) {
+      chain.push(
+        <ErrMsg
+          key={meta.error}
+          meta={meta}
+          rootEl={document.querySelector('#card-num-err')}
+        />
       );
     }
 

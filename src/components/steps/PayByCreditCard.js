@@ -3,6 +3,7 @@ import { reduxForm } from 'redux-form';
 import Layout from '../Layout';
 import InstallmentCtrler from '../controllers/InstallmentCtrler';
 import CardNumCtrler from '../controllers/CardNumCtrler';
+import { validateCardNum } from '../../util';
 
 class PayByCreditCard extends Component {
   onSubmit(data) {
@@ -22,33 +23,14 @@ class PayByCreditCard extends Component {
   }
 }
 
-function validateCardNum (cardNum) {
-  if (cardNum.length < 16) {
-      return false;
-  }
-
-  const newCardNum = cardNum.split('').map((num, index) => (
-      (index + 1) % 2 === 0 ? +num : +num * 2
-  )).map((num) => (
-      num > 9 ? `${num}`.split('').map((n) => +n) : num
-  )).flat().reduce((a, e) => a + e, 0);
-
-  return newCardNum % 10 === 0;
-}
-
 function validate(formValues) {
   const error = {};
-  const { cardNum1, cardNum2, cardNum3, cardNum4 } = formValues;
-  const cardNum = [ cardNum1, cardNum2, cardNum3, cardNum4 ];
+  const cardNum = formValues.cardNum ? Object.values(formValues.cardNum).join('') : '';
 
-  if (!formValues.installment) {
-    error.installment = '請選擇付款方式';
+  if (!validateCardNum(cardNum)) {
+    error.cardNum = '請填寫正確信用卡號';
   }
-
-  // if (cardNum.filter((num) => num).length < 4) {
-  //   error.
-  // }
-
+  
   return error;
 }
 

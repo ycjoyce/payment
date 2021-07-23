@@ -1,7 +1,6 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
 import Label from './Label';
-import ErrMsg from './ErrMsg';
 import CardNumInputChain from './CardNumInputChain';
 import ShowCardLabels from './ShowCardLabels';
 
@@ -19,14 +18,16 @@ class CardNumCtrler extends Component {
             className="ms-lg-3 mt-lg-0 mt-2"
           />
         </div>
+
+        <div id="card-num-err"></div>
       </div>
     );
   }
 }
 
 function mapStateToProps(state) {
-  const { cardNum1, cardNum2, cardNum3, cardNum4 } = state.form.PayByCreditCard.values;
-  return { cardNum: [cardNum1, cardNum2, cardNum3, cardNum4] };
+  const { cardNum } = state.form.PayByCreditCard.values;
+  return { cardNum: Object.values(cardNum) };
 }
 
 export default connect(mapStateToProps)(CardNumCtrler);

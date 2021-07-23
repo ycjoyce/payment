@@ -17,7 +17,7 @@ class ShowCardLabels extends Component {
 	];
 
   checkCardLabel(cardNum) {
-    if (cardNum.includes(undefined)) {
+    if (cardNum.filter((num) => num).length < 4) {
       return false;
     }
     
