@@ -1,12 +1,7 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
-import { getSteps } from '../actions';
 
 class StepBar extends Component {
-	componentDidMount() {
-		this.props.getSteps();
-	}
-
 	renderSteps() {
 		const steps = [];
 
@@ -40,10 +35,10 @@ class StepBar extends Component {
 }
 
 function mapStateToProps(state) {
-	return { steps: Object.keys(state.step).length };
+	return {
+		steps: Object.keys(state.steps).length,
+		curStep: state.curStep,
+	};
 }
 
-export default connect(
-	mapStateToProps,
-	{ getSteps }
-)(StepBar);
+export default connect(mapStateToProps)(StepBar);

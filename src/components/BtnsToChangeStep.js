@@ -1,25 +1,22 @@
-import React from 'react';
+import { Link } from 'react-router-dom';
 
-class BtnsToChangeStep extends React.Component {
-  render() {
-		return (
-			<div className="d-flex justify-content-between">
-				<button
-					className="btn btn-secondary"
-					onClick={() => this.props.handleChangeStep('prev')}
-				>
-					<small>回上一步</small>
-				</button>
+function BtnsToChangeStep() {
+	return (
+		<div className="d-flex justify-content-between">
+			<Link
+				to="/choose-pay-method"
+				className="btn btn-secondary"
+			>
+				<small>回上一步</small>
+			</Link>
 
-				<button
-					className="btn btn-primary text-white"
-					onClick={this.props.handleSubmit}
-				>
-					<small>確認付款</small>
-				</button>
-			</div>
-		);
-	}
+			<button
+				className="btn btn-primary text-white"
+			>
+				<small>確認付款</small>
+			</button>
+		</div>
+	);
 }
 
 export default BtnsToChangeStep;

@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import { validateCardNum } from '../../util';
 
 class ShowCardLabels extends Component {
   labels = [
@@ -17,23 +18,15 @@ class ShowCardLabels extends Component {
 	];
 
   checkCardLabel(cardNum) {
-    if (cardNum.filter((num) => num).length < 4) {
-      return false;
-    }
-    
-    const newCardNum = cardNum.join('');
-    if (Number.isNaN(+newCardNum)) {
-      return false;
-    }
-
-		const firstTwoChar = newCardNum.substr(0, 2);
-		const firstThreeChar = newCardNum.substr(0, 3);
-		const firstFourChar = newCardNum.substr(0, 4);
-		
-		if (newCardNum.length !== 16) {
+		if (!validateCardNum(cardNum).status) {
 			return false;
-		} 
-		if (newCardNum.startsWith('4')) {
+		}
+
+		const firstTwoChar = cardNum.substr(0, 2);
+		const firstThreeChar = cardNum.substr(0, 3);
+		const firstFourChar = cardNum.substr(0, 4);
+		
+		if (cardNum.startsWith('4')) {
 			return 'visa';
 		}
 		if (+firstTwoChar >= 51 && +firstTwoChar <= 55) {
@@ -47,10 +40,6 @@ class ShowCardLabels extends Component {
 
   renderLabels() {
     const { cardNum } = this.props;
-
-    if (!cardNum) {
-      return null;
-    }
 
 		return this.labels.map((label, index, arr) => {
 			const className = `

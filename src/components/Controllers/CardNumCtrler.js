@@ -26,8 +26,11 @@ class CardNumCtrler extends Component {
 }
 
 function mapStateToProps(state) {
-  const { cardNum } = state.form.PayByCreditCard.values;
-  return { cardNum: Object.values(cardNum) };
+  if (!state.form.Payment.values) {
+    return { cardNum: '' };
+  }
+  const { cardNum } = state.form.Payment.values;
+  return { cardNum: Object.values(cardNum).join('') };
 }
 
 export default connect(mapStateToProps)(CardNumCtrler);

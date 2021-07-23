@@ -1,4 +1,4 @@
-import { GET_STEPS } from '../actions/type';
+import { GET_STEPS, SET_CUR_STEP } from '../actions/type';
 
 const steps = {
   1: {
@@ -22,10 +22,19 @@ const steps = {
   },
 };
 
-export default function stepReducer(state = {}, action) {
+export function stepReducer(state = {}, action) {
   switch (action.type) {
     case GET_STEPS:
       return steps;
+    default:
+      return state;
+  }
+}
+
+export function curStepReducer(state = 1, action) {
+  switch (action.type) {
+    case SET_CUR_STEP:
+      return action.payload;
     default:
       return state;
   }

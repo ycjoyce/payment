@@ -1,8 +1,12 @@
 import React from 'react';
 import { Router, Route } from 'react-router-dom';
+import { connect } from 'react-redux';
 import history from '../history';
+import { getSteps, setCurStep } from '../actions';
 import ChoosePayMethod from './steps/ChoosePayMethod';
 import PayByCreditCard from './steps/PayByCreditCard';
+import PayByStore from './steps/PayByStore';
+import PayByATM from './steps/PayByATM';
 import '../styles/all.scss';
 
 class App extends React.Component {
@@ -26,6 +30,16 @@ class App extends React.Component {
 // 		this.setState({ mainContentTop: val });
 // 	}
 
+	componentDidMount() {
+		this.props.getSteps();
+		this.historyListen = history.listen((location) => {
+			const [page] = location.pathname.substr(1).split('/');
+			const idx = Object.values(this.props.steps).findIndex((step) => step.value === page);
+			const step = Object.keys(this.props.steps)[idx];
+			this.props.setCurStep(+step);
+		});
+	}
+
 	render() {
 		return (
 			<Router history={history}>
@@ -38,19 +52,30 @@ class App extends React.Component {
 				<Route
 					path="/fill-in-info/credit-card"
 					exact
-					render={(props) => (
-						<PayByCreditCard
-							{...props}
-							initialValues={{
-								installment: 'pay-once',
-								cardNum: { 1: '', 2: '', 3: '', 4: '' },
-							}}
-						/>
-					)}
+					component={PayByCreditCard}
+				/>
+
+				<Route
+					path="/fill-in-info/convenience-store"
+					exact
+					component={PayByStore}
+				/>
+
+				<Route
+					path="/fill-in-info/web-atm"
+					exact
+					component={PayByATM}
 				/>
 			</Router>
 		);
 	}
 }
 
-export default App;
+function mapStateToProps(state) {
+	return { steps: state.steps };
+}
+
+export default connect(
+	mapStateToProps,
+	{ getSteps, setCurStep }
+)(App);

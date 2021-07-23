@@ -1,6 +1,8 @@
 import {
 	GET_ORDER,
 	GET_STEPS,
+	SET_CUR_STEP,
+	SET_PAYMENT_INFO,
 } from './type';
 
 export const getOrder = () => {
@@ -26,4 +28,18 @@ export const getOrder = () => {
 
 export const getSteps = () => {
 	return { type: GET_STEPS };
+};
+
+export const setCurStep = (step) => {
+	return {
+		type: SET_CUR_STEP,
+		payload: step,
+	};
+};
+
+export const setPaymentInfo = (info) => {
+	return {
+		type: SET_PAYMENT_INFO,
+		payload: info,
+	};
 };

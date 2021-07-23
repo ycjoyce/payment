@@ -1,17 +1,12 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
 import StepBar from './StepBar';
-// import MainContentBox from './MainContentBox';
 
 class MainArea extends Component {
 	render() {
 		return (
 			<main className={`main-area ${this.props.className || ''}`}>
-				<StepBar
-					// steps="3"
-					// curStep={this.props.step}
-					className="justify-content-center my-4"
-				/>
+				<StepBar className="justify-content-center my-4" />
 				
 				<div
 					className="main-content shadow p-4 overflow-scroll flex-grow-1 bg-white"

@@ -18,12 +18,8 @@ class ErrMsg extends Component {
   }
 
   render() {
-    const { meta } = this.props;
-    if (!meta || (!meta.error || !meta.touched)) {
-      return null;
-    }
     return createPortal(
-      meta.error,
+      this.props.children,
       this.el
     );
   }

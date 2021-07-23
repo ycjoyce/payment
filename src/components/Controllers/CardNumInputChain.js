@@ -16,7 +16,7 @@ class CardNumInputChain extends Component {
     };
   }
 
-  renderInput = ({ idx, input, last = false }) => {
+  renderInput = ({ idx, input, last = false, meta }) => {
     const onInputChange = (e) => {
       const idx = +e.target.dataset.idx;
       if (e.target.value.length > 3) {
@@ -37,7 +37,11 @@ class CardNumInputChain extends Component {
       <input
         maxLength={4}
         data-idx={idx}
-        className={`form-control ${last && 'me-2 me-sm-0 px-1 px-sm-2'}`}
+        className={`
+          form-control
+          ${last && ' me-2 me-sm-0 px-1 px-sm-2'}
+          ${(meta.error && meta.touched) && ' border-danger'}
+        `}
         ref={this.inputRefs[idx]}
         onChange={onInputChange}
       />
@@ -51,7 +55,7 @@ class CardNumInputChain extends Component {
       if (i !== 3) {
         chain.push(
           <Fragment key={i}>
-            {this.renderInput({ idx: i, input, last: false })}
+            {this.renderInput({ idx: i, input, last: false, meta })}
             <span className="mx-1 d-none d-sm-block">—</span>
           </Fragment>
         );
@@ -59,7 +63,7 @@ class CardNumInputChain extends Component {
       }
       chain.push(
         <Fragment key={i}>
-          {this.renderInput({ idx: i, input, last: true })}
+          {this.renderInput({ idx: i, input, last: true, meta })}
         </Fragment>
       );
     }
@@ -68,9 +72,10 @@ class CardNumInputChain extends Component {
       chain.push(
         <ErrMsg
           key={meta.error}
-          meta={meta}
           rootEl={document.querySelector('#card-num-err')}
-        />
+        >
+          {meta.error}
+        </ErrMsg>
       );
     }
 

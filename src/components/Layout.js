@@ -1,15 +1,10 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
-import { getSteps } from '../actions';
 import TitleBar from './TitleBar';
 import AsideArea from './AsideArea';
 import MainArea from './MainArea';
 
 class Layout extends Component {
-	componentDidMount() {
-		this.props.getSteps();
-	}
-
 	renderTitle() {
 		if (!this.props.step.step) {
 			return null;
@@ -46,9 +41,9 @@ class Layout extends Component {
 
 function mapStateToProps(state, { curPage }) {
 	const [ mainType, subType ] = curPage.substr(1).split('/');
-	const idx = Object.values(state.step).findIndex((step) => step.value === mainType);
+	const idx = Object.values(state.steps).findIndex((step) => step.value === mainType);
 	let result = {
-		...Object.values(state.step)[idx], step: Object.keys(state.step)[idx]
+		...Object.values(state.steps)[idx], step: Object.keys(state.steps)[idx]
 	};
 	const payMethodMap = {
 		'credit-card': '信用卡 / 金融卡',
@@ -57,13 +52,10 @@ function mapStateToProps(state, { curPage }) {
 	};
 
 	if (payMethodMap[subType]) {
-		result = {...result, subtitle: payMethodMap[subType]};
+		result = {...result, subtitle: payMethodMap[subType] };
 	}
 
 	return { step: result };
 }
 
-export default connect(
-	mapStateToProps,
-	{ getSteps }
-)(Layout);
+export default connect(mapStateToProps)(Layout);
