@@ -2,7 +2,7 @@ import { Component } from 'react';
 import { connect } from 'react-redux';
 import { setPaymentInfo } from '../../actions';
 import PayForm from './PayForm';
-import InstallmentCtrler from '../controllers/InstallmentCtrler';
+import InstallmentCtrler from '../controllers/InstCtrler';
 import CardNumCtrler from '../controllers/CardNumCtrler';
 import ExpirationCtrler from '../controllers/ExpirationCtrler';
 import SafeCodeCtrler from '../controllers/SafeCodeCtrler';
