@@ -1,5 +1,5 @@
 # 模擬付款流程網站
-基於 React.js 建立的模擬付款流程網站，UI 採用 Bootstrap 建立而成，並支援 RWD。
+基於 React.js 建立的模擬付款流程網站，以 Redux 管理狀態，以 React Router 進行路由。UI 採用 Bootstrap 建立而成，並支援 RWD。
 
 ## 線上演示
 [Demo](https://ycjoyce.github.io/payment/)
@@ -30,6 +30,8 @@
 
 ## 使用技術
 - React.js
+- Redux
+- React Router
 - Javascript (ES6+)
 - SCSS
 - Bootstrap
