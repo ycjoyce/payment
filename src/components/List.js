@@ -1,14 +1,6 @@
 import { Component } from 'react';
 
 class List extends Component {
-    listClassName() {
-        let className = `list ps-0 mb-0 ${this.props.className || ''}`;
-        // if (this.props.hide) {
-        //     className += ` hide`;
-        // }
-        return className;
-    }
-
     renderList() {
         return this.props.items.map((item) => (
             <li
@@ -30,7 +22,7 @@ class List extends Component {
 
     render() {
         return (
-            <ul className={this.listClassName()}>
+            <ul className={`list ps-0 mb-0 ${this.props.className || ''}`}>
                 {this.renderList()}
             </ul>
         );

@@ -1,6 +1,7 @@
 import {
 	GET_ORDER,
 	GET_STEPS,
+	GET_STORES,
 	SET_CUR_STEP,
 	SET_PAYMENT_INFO,
 } from './type';
@@ -43,3 +44,7 @@ export const setPaymentInfo = (info) => {
 		payload: info,
 	};
 };
+
+export const getStores = () => {
+	return { type: GET_STORES };
+}

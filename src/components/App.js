@@ -1,5 +1,5 @@
 import React from 'react';
-import { Router, Route } from 'react-router-dom';
+import { Router, Route, Switch, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import history from '../history';
 import { getSteps, setCurStep } from '../actions';
@@ -7,29 +7,11 @@ import ChoosePayMethod from './steps/ChoosePayMethod';
 import PayByCreditCard from './steps/PayByCreditCard';
 import PayByStore from './steps/PayByStore';
 import PayByATM from './steps/PayByATM';
+import Finish from './steps/Finish';
+import FinishStore from './steps/FinishStore';
 import '../styles/all.scss';
 
 class App extends React.Component {
-// 	constructor(props) {
-// 		super(props);
-// 		this.state = {
-// 			finish: false,
-// 			mainContentTop: 0,
-// 		};
-// 		this.handleFinish = this.handleFinish.bind(this);
-// 		this.handleGetMainContentTop = this.handleGetMainContentTop.bind(this);
-// 	}
-// 
-// 	handleFinish(status) {
-// 		if (this.state.finish !== status) {
-// 			this.setState({ finish: status });
-// 		}
-// 	}
-// 
-// 	handleGetMainContentTop(val) {
-// 		this.setState({ mainContentTop: val });
-// 	}
-
 	componentDidMount() {
 		this.props.getSteps();
 		this.historyListen = history.listen((location) => {
@@ -43,29 +25,39 @@ class App extends React.Component {
 	render() {
 		return (
 			<Router history={history}>
-				<Route
-					path="/choose-pay-method"
-					exact
-					component={ChoosePayMethod}
-				/>
+				<Switch>
+					<Route
+						path="/choose-pay-method" exact
+						component={ChoosePayMethod}
+					/>
 
-				<Route
-					path="/fill-in-info/credit-card"
-					exact
-					component={PayByCreditCard}
-				/>
+					<Route
+						path="/fill-in-info/credit-card" exact
+						component={PayByCreditCard}
+					/>
 
-				<Route
-					path="/fill-in-info/convenience-store"
-					exact
-					component={PayByStore}
-				/>
+					<Route
+						path="/fill-in-info/convenience-store" exact
+						component={PayByStore}
+					/>
 
-				<Route
-					path="/fill-in-info/web-atm"
-					exact
-					component={PayByATM}
-				/>
+					<Route
+						path="/fill-in-info/web-atm" exact
+						component={PayByATM}
+					/>
+
+					<Route
+						path="/finish" exact
+						component={Finish}
+					/>
+
+					<Route
+						path="/finish/convenience-store" exact
+						component={FinishStore}
+					/>
+
+					<Route render={() => <Redirect to="/choose-pay-method" />}/>
+				</Switch>
 			</Router>
 		);
 	}

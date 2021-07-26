@@ -1,41 +1,29 @@
 import { Component, Fragment } from 'react';
+import { connect } from 'react-redux';
 import { Field } from 'redux-form';
+import { getStores } from '../../actions';
 import { renderErrMsg } from '../../util';
 import Label from './Label';
 
 class StoreCtrler extends Component {
-  stores = [
-		{
-			value: 'placeholder',
-			title: '選擇商店',
-		},
-		{
-			value: '7-11',
-			title: '7-11',
-		},
-		{
-			value: 'fami-mart',
-			title: '全家',
-		},
-		{
-			value: 'hi-life',
-			title: '萊爾富',
-		},
-		{
-			value: 'ok-mart',
-			title: 'OK mart',
-		}
-	];
+  componentDidMount() {
+    this.props.getStores();
+  }
 
-  renderOptions() {
-    return this.stores.map((store) => (
-      <option key={store.value} value={store.value} disabled={store.value === 'placeholder'}>
+  renderOptions(stores) {
+    const options = [{ value: 'placeholder', title: '選擇商店' }, ...stores];
+    return options.map((store) => (
+      <option
+        key={store.value}
+        value={store.value}
+        disabled={store.value === 'placeholder'}
+      >
         {store.title}
       </option>
     ));
   }
 
-  renderStore = ({ input, meta }) => {
+  renderStore = ({ input, meta, stores }) => {
     const { error, touched } = meta;
     const onSelectChange = (e) => {
       const { value } = e.target;
@@ -49,7 +37,7 @@ class StoreCtrler extends Component {
           onChange={onSelectChange}
           className={`form-select ${(error && touched) && 'border-danger'}`}
         >
-          {this.renderOptions()}
+          {this.renderOptions(stores)}
         </select>
         {renderErrMsg({ meta, rootEl: document.querySelector('#store-err') })}
       </Fragment>
@@ -64,6 +52,7 @@ class StoreCtrler extends Component {
           <Field
             name="store"
             component={this.renderStore}
+            stores={this.props.stores}
           />
         </div>
         <div id="store-err"></div>
@@ -72,4 +61,18 @@ class StoreCtrler extends Component {
   }
 }
 
-export default StoreCtrler;
+function mapStateToProps(state) {
+  let stores = Object.entries(state.stores);
+
+  if (stores.length < 1) {
+    return { stores: [] };
+  }
+
+  stores = stores.map(([key, val]) => ({ value: key, title: val }));
+  return { stores };
+}
+
+export default connect(
+  mapStateToProps,
+  { getStores }
+)(StoreCtrler);

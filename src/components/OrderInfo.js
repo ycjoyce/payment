@@ -4,34 +4,17 @@ import { getOrder } from '../actions';
 import List from './List';
 
 class OrderInfo extends Component {
-// 	state = {
-// 		hideList: false,
-// 	};
-// 
-// 	initHideList = () => {
-// 		this.setState({ hideList: document.documentElement.offsetWidth < 576 });
-// 	}
-// 
-// 	toggleHideList = () => {
-// 		if (document.documentElement.offsetWidth > 575) {
-// 			return;
-// 		}
-// 		this.setState((state) => ({
-// 			hideList: !state.hideList,
-// 		}));
-// 	}
-// 
-// 	componentDidMount() {
-// 		this.initHideList();
-// 		window.addEventListener('resize', this.initHideList);
-// 	}
-// 
-// 	componentWillUnmount() {
-// 		window.removeEventListener('resize', this.initHideList);
-// 	}
+	state = { hideList: null };
 
 	componentDidMount() {
 		this.props.getOrder();
+		this.setState({ hideList: this.props.windowWidth < 576 });
+	}
+
+	componentDidUpdate(oldProps) {
+		if (oldProps.windowWidth !== this.props.windowWidth) {
+			this.setState({ hideList: this.props.windowWidth < 576 });
+		}
 	}
 
 	renderList() {
@@ -41,8 +24,7 @@ class OrderInfo extends Component {
 		return (
 			<List
 				items={this.props.order}
-				// hide={this.state.hideList}
-				className="order-info-list p-sm-0 p-3"
+				className={`order-info-list p-sm-0 p-3 ${this.state.hideList ? 'hide' : ''}`}
 			/>
 		);
 	}
@@ -52,7 +34,7 @@ class OrderInfo extends Component {
 			<div className={`order-info p-sm-3 rounded-start ${this.props.className || ''}`}>
 				<h3
 					className="order-info-title"
-					// onClick={this.toggleHideList}
+					onClick={() => this.setState((state) => ({ hideList: !state.hideList }))}
 				>
 					訂單資訊
 				</h3>

@@ -16,7 +16,7 @@ const steps = {
   3: {
     title: {
       default: '您的訂單已完成付款！',
-      store: '您的訂單已成立！',
+      'convenience-store': '您的訂單已成立！',
     },
     value: 'finish',
   },

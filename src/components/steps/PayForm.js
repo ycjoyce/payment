@@ -54,6 +54,10 @@ function validate(formValues) {
     error.store = '請選擇付款超商';
   }
 
+  if (!formValues.bank) {
+    error.bank = '請選擇付款銀行';
+  }
+
   return error;
 }
 

@@ -7,6 +7,7 @@ import BankCtrler from '../controllers/BankCtrler';
 class PayByCreditCard extends Component {
   onSubmit = (formValues) => {
     this.props.setPaymentInfo(formValues);
+    localStorage.setItem('payment-info', JSON.stringify(formValues));
     this.props.history.push('/finish');
   }
 

@@ -1,18 +1,43 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
+import { setCurStep } from '../actions';
 import TitleBar from './TitleBar';
 import AsideArea from './AsideArea';
 import MainArea from './MainArea';
 
 class Layout extends Component {
-	renderTitle() {
-		if (!this.props.step.step) {
-			return null;
+	state = { asideTop: 0 };
+	
+	componentDidUpdate() {
+		if (!this.props.matchStep) {
+			this.props.setCurStep(this.props.step.step);
 		}
+	}
+
+	renderTitle() {
+		const payMethodMap = {
+			'credit-card': '信用卡 / 金融卡',
+			'convenience-store': '超商付款',
+			'web-atm': 'Web ATM',
+		};
+
+		let step = `STEP${this.props.step.step}`;
+		let title = this.props.title.default;
+		let subtitle = payMethodMap[this.props.subType];
+
+		if (this.props.step.value === 'finish') {
+			step = '';
+			subtitle = null;
+
+			if (this.props.subType === 'convenience-store') {
+				title = this.props.title[this.props.subType];
+			}
+		}
+
 		return (
 			<TitleBar
-				title={`STEP${this.props.step.step}: ${this.props.step.title.default}`}
-				subtitle={this.props.step.subtitle}
+				title={`${step}${title}`}
+				subtitle={subtitle}
 			/>
 		);
 	}
@@ -21,14 +46,12 @@ class Layout extends Component {
 		return (
 			<div className="outer-container row g-0">
 				<AsideArea
-					// finish={this.state.finish}
-					// top={this.state.mainContentTop}
+					top={this.state.asideTop}
 					className="col-sm-3 align-self-start"
 				/>
 
 				<MainArea
-					// handleFinish={this.handleFinish}
-					// handleGetTop={this.handleGetMainContentTop}
+					getMainContentTop={(top) => this.setState({ asideTop: top })}
 					className="col-sm-9 d-flex flex-column"
 				>
 					{this.renderTitle()}
@@ -40,22 +63,19 @@ class Layout extends Component {
 }
 
 function mapStateToProps(state, { curPage }) {
-	const [ mainType, subType ] = curPage.substr(1).split('/');
+	const [mainType, subType] = curPage.substr(1).split('/');
 	const idx = Object.values(state.steps).findIndex((step) => step.value === mainType);
-	let result = {
-		...Object.values(state.steps)[idx], step: Object.keys(state.steps)[idx]
+	const step = +Object.keys(state.steps)[idx];
+	
+	return {
+		subType,
+		step: { step, value: state.steps[step] ? state.steps[step].value : {} },
+		title: state.steps[step] ? state.steps[step].title : {},
+		matchStep: step === state.curStep,
 	};
-	const payMethodMap = {
-		'credit-card': '信用卡 / 金融卡',
-		'convenience-store': '超商付款',
-		'web-atm': 'Web ATM',
-	};
-
-	if (payMethodMap[subType]) {
-		result = {...result, subtitle: payMethodMap[subType] };
-	}
-
-	return { step: result };
 }
 
-export default connect(mapStateToProps)(Layout);
+export default connect(
+	mapStateToProps,
+	{ setCurStep }
+)(Layout);

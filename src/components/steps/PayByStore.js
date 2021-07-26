@@ -6,8 +6,11 @@ import StoreCtrler from '../controllers/StoreCtrler';
 
 class PayByCreditCard extends Component {
   onSubmit = (formValues) => {
-    this.props.setPaymentInfo(formValues);
-    this.props.history.push('/finish');
+    const target = `/finish${this.props.type === 'convenience-store' ? '/convenience-store' : ''}`;
+    const data = { ...formValues, time: Date.now() };
+    this.props.setPaymentInfo(data);
+    localStorage.setItem('payment-info', JSON.stringify(data));
+    this.props.history.push(target);
   }
 
   render() {
@@ -22,7 +25,12 @@ class PayByCreditCard extends Component {
   }
 }
 
+function mapStateToProps(state, ownProps) {
+  const [,type] = ownProps.match.path.substr(1).split('/');
+  return { type };
+}
+
 export default connect(
-  null,
+  mapStateToProps,
   { setPaymentInfo }
 )(PayByCreditCard);

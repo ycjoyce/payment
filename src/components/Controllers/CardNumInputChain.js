@@ -30,7 +30,6 @@ class CardNumInputChain extends Component {
         },
         () => input.onChange(this.state.cardNum)
       );
-      input.onChange(this.state.cardNum);
     };
 
     return (
@@ -39,7 +38,7 @@ class CardNumInputChain extends Component {
         data-idx={idx}
         className={`
           form-control
-          ${last && ' me-2 me-sm-0 px-1 px-sm-2'}
+          ${!last && ' me-2 me-sm-0 px-1 px-sm-2'}
           ${(meta.error && meta.touched) && ' border-danger'}
         `}
         ref={this.inputRefs[idx]}
