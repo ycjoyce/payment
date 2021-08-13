@@ -35,6 +35,7 @@
 - Javascript (ES6+)
 - SCSS
 - Bootstrap
+- ESLint (Airbnb)
 
 ## 應用介面
 - 步驟一：選擇付款方式
