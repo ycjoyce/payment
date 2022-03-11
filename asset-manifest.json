@@ -1,0 +1,29 @@
+{
+  "files": {
+    "main.css": "/payment/static/css/main.92a1f216.chunk.css",
+    "main.js": "/payment/static/js/main.24d5b56f.chunk.js",
+    "main.js.map": "/payment/static/js/main.24d5b56f.chunk.js.map",
+    "runtime-main.js": "/payment/static/js/runtime-main.c92668ea.js",
+    "runtime-main.js.map": "/payment/static/js/runtime-main.c92668ea.js.map",
+    "static/js/2.4fec7f6b.chunk.js": "/payment/static/js/2.4fec7f6b.chunk.js",
+    "static/js/2.4fec7f6b.chunk.js.map": "/payment/static/js/2.4fec7f6b.chunk.js.map",
+    "index.html": "/payment/index.html",
+    "static/css/main.92a1f216.chunk.css.map": "/payment/static/css/main.92a1f216.chunk.css.map",
+    "static/js/2.4fec7f6b.chunk.js.LICENSE.txt": "/payment/static/js/2.4fec7f6b.chunk.js.LICENSE.txt",
+    "static/media/back-three.svg": "/payment/static/media/back-three.67786388.svg",
+    "static/media/credit-card.svg": "/payment/static/media/credit-card.f2b43023.svg",
+    "static/media/finish.svg": "/payment/static/media/finish.33305261.svg",
+    "static/media/all.scss": "/payment/static/media/footer-background.76378fd1.svg",
+    "static/media/jcb.svg": "/payment/static/media/jcb.7063081f.svg",
+    "static/media/mastercard.svg": "/payment/static/media/mastercard.272e180d.svg",
+    "static/media/shop.svg": "/payment/static/media/shop.b209ed75.svg",
+    "static/media/visa.svg": "/payment/static/media/visa.b2da2220.svg",
+    "static/media/web-atm.svg": "/payment/static/media/web-atm.f9f2f539.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.c92668ea.js",
+    "static/js/2.4fec7f6b.chunk.js",
+    "static/css/main.92a1f216.chunk.css",
+    "static/js/main.24d5b56f.chunk.js"
+  ]
+}
