@@ -12,6 +12,11 @@ import FinishStore from './steps/FinishStore';
 import '../styles/all.scss';
 
 class App extends React.Component {
+	setVh() {
+		const vh = window.innerHeight * 0.01;
+		document.documentElement.style.setProperty("--vh", `${vh}px`);
+	}
+
 	componentDidMount() {
 		this.props.getSteps();
 		this.historyListen = history.listen((location) => {
@@ -20,6 +25,8 @@ class App extends React.Component {
 			const step = Object.keys(this.props.steps)[idx];
 			this.props.setCurStep(+step);
 		});
+
+		this.setVh();
 	}
 
 	render() {
